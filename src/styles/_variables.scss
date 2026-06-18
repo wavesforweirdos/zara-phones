@@ -1,0 +1,55 @@
+// ---- CSS custom properties (:root) ----
+// Valores extraídos directamente del Figma (file: Nuic7ePgOfUQ0hcBrUUQrb)
+
+:root {
+  // Colores
+  --color-black: #000000;
+  --color-black-soft: #1b1a18;
+  --color-white: #ffffff;
+  --color-gray-medium: #aaaaaa;
+  --color-gray-light: #cccccc;
+  --color-gray-lighter: #d9d9d9;
+  --color-error: #df0000;
+  --color-badge: #ec1d24;
+
+  // Espaciados (valores exactos del Figma)
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 11px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  --space-4xl: 40px;
+  --space-5xl: 64px;
+  --space-6xl: 100px;
+}
+
+// ---- SCSS variables (alias para usar en cálculos) ----
+
+$color-black: #000000;
+$color-black-soft: #1b1a18;
+$color-white: #ffffff;
+$color-gray-medium: #aaaaaa;
+$color-gray-light: #cccccc;
+$color-gray-lighter: #d9d9d9;
+$color-error: #df0000;
+$color-badge: #ec1d24;
+
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 11px;
+$space-lg: 16px;
+$space-xl: 20px;
+$space-2xl: 24px;
+$space-3xl: 32px;
+$space-4xl: 40px;
+$space-5xl: 64px;
+$space-6xl: 100px;
+
+// Breakpoints
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
+// Tipografía
+$font-family: Helvetica, Arial, sans-serif;
