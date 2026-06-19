@@ -23,6 +23,10 @@ module.exports = (env, argv) => {
           type: 'javascript/auto',
         },
         {
+          test: /\.svg$/,
+          type: 'asset/resource',
+        },
+        {
           test: /\.scss$/,
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
