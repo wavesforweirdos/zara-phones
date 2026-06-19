@@ -1,0 +1,75 @@
+// 10px · weight 300 · uppercase
+@mixin text-xs {
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+// 12px · weight 300 · uppercase
+@mixin text-sm {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+// 16px · weight 300
+@mixin text-md {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+// 20px · weight 300
+@mixin text-lg {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+// 24px · weight 300 · uppercase
+@mixin text-xl {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+// 12px · weight 300 · color #aaaaaa (placeholder, results count)
+@mixin text-label {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #aaaaaa;
+}
+
+// 12px · weight 300 · capitalize (precios en tarjeta)
+@mixin text-price {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: capitalize;
+}
+
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 12px · weight 300 · letter-spacing 0.96px · uppercase (botón)
+@mixin text-button {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+}

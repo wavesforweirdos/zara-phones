@@ -1,51 +1,47 @@
+@use '../../styles/mixins/index' as *;
+
 .navbar {
   position: sticky;
   top: 0;
   z-index: 100;
   height: 80px;
   background: var(--color-white);
-  border-bottom: 0.5px solid var(--color-gray-light);
-}
 
-.navbar__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  padding: 0 var(--space-6xl);
-
-  @media (max-width: 768px) {
-    padding: 0 var(--space-lg);
+  &--bordered {
+    border-bottom: 0.5px solid var(--color-gray-light);
   }
-}
 
-.navbar__logo {
-  display: flex;
-  align-items: center;
-}
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
 
-.navbar__logo-img {
-  height: 28px;
-  width: auto;
-}
+  &__logo {
+    display: flex;
+    align-items: center;
+  }
 
-.navbar__cart {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  color: var(--color-black);
-}
+  &__logo-img {
+    height: 28px;
+    width: auto;
+  }
 
-.navbar__bag{
-  &-icon {
+  &__cart {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--color-black);
+  }
+
+  &__bag-icon {
     width: 33px;
     height: 26px;
   }
-}
 
-.navbar__cart-count {
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1;
-  color: var(--color-black);
+  &__cart-count {
+    @include text-md;
+    color: var(--color-black);
+  }
 }

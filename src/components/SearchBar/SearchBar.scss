@@ -1,0 +1,60 @@
+@use '../../styles/mixins/index' as *;
+
+.search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 48px;
+  padding-bottom: 48px;
+  background: var(--color-white);
+
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    width: 100%;
+    border: none;
+    border-bottom: 0.5px solid #000000;
+    @include text-md;
+    vertical-align: middle;
+    color: var(--color-black);
+    background: transparent;
+    outline: none;
+    padding-bottom: var(--space-sm);
+    padding-right: var(--space-2xl);
+
+    &::placeholder {
+      color: #aaaaaa;
+    }
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
+  }
+
+  &__clear {
+    position: absolute;
+    right: 0;
+    bottom: var(--space-sm);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__count {
+    @include text-sm;
+    color: #000000;
+  }
+}
