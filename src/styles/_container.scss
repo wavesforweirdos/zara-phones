@@ -4,32 +4,32 @@
   width: 100%;
 
   &--xl {
-    padding-left: var(--space-6xl);
-    padding-right: var(--space-6xl);
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
 
-    @include mobile {
-      padding-left: var(--space-lg);
-      padding-right: var(--space-lg);
+    @include tablet {
+      padding-left: var(--space-6xl);
+      padding-right: var(--space-6xl);
     }
   }
 
   &--lg {
-    padding-left: var(--space-4xl);
-    padding-right: var(--space-4xl);
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
 
-    @include mobile {
-      padding-left: var(--space-lg);
-      padding-right: var(--space-lg);
+    @include tablet {
+      padding-left: var(--space-4xl);
+      padding-right: var(--space-4xl);
     }
   }
 
   &--md {
-    padding-left: var(--space-2xl);
-    padding-right: var(--space-2xl);
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
 
-    @include mobile {
-      padding-left: var(--space-lg);
-      padding-right: var(--space-lg);
+    @include tablet {
+      padding-left: var(--space-2xl);
+      padding-right: var(--space-2xl);
     }
   }
 }

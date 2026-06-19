@@ -1,19 +1,21 @@
 @use '../variables' as *;
 
-@mixin mobile {
-  @media (max-width: $breakpoint-mobile) {
-    @content;
-  }
-}
+// Base styles = mobile (sin mixin)
 
 @mixin tablet {
-  @media (max-width: $breakpoint-desktop) {
+  @media (min-width: #{$breakpoint-tablet + 1px}) {
     @content;
   }
 }
 
 @mixin desktop {
-  @media (min-width: #{$breakpoint-desktop + 1}) {
+  @media (min-width: #{$breakpoint-desktop + 1px}) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media (min-width: #{$breakpoint-widescreen + 1px}) {
     @content;
   }
 }
