@@ -1,0 +1,41 @@
+@use '../../styles/mixins/index' as *;
+
+.color-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  &__label {
+    @include text-sm;
+    color: var(--color-black);
+  }
+
+  &__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    padding: var(--space-sm) 0;
+  }
+
+  &__swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    cursor: pointer;
+    padding: 0;
+
+    &--selected {
+      outline-color: var(--color-black);
+    }
+  }
+
+  &__name {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-black);
+  }
+}
