@@ -11,14 +11,27 @@
     display: flex;
     overflow-x: auto;
     list-style: none;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: #000000 transparent;
 
     &::-webkit-scrollbar {
-      display: none;
+      height: 2px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #000000;
     }
 
     > li {
       flex: 0 0 280px;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 0.5px solid var(--color-black);
+      display: flex;
     }
 
     @include desktop {
@@ -30,7 +43,9 @@
 
       > li {
         flex: unset;
-        display: contents;
+        border: none;
+        border-right: 0.5px solid var(--color-black);
+        border-bottom: 0.5px solid var(--color-black);
       }
     }
   }
