@@ -11,12 +11,15 @@ function usePhones() {
   const debouncedQuery = useDebounce(query, 300);
 
   useEffect(() => {
+    const dedupe = (arr) =>
+      Array.isArray(arr) ? arr.filter((p, i, a) => a.findIndex((x) => x.id === p.id) === i) : [];
+
     const load = async () => {
       const cacheKey = `phones_cache_${debouncedQuery}`;
       const cached = sessionStorage.getItem(cacheKey);
 
       if (cached) {
-        setPhones(JSON.parse(cached));
+        setPhones(dedupe(JSON.parse(cached)));
         return;
       }
 
@@ -25,8 +28,9 @@ function usePhones() {
 
       try {
         const data = await fetchProducts(debouncedQuery);
-        setPhones(Array.isArray(data) ? data : []);
-        sessionStorage.setItem(cacheKey, JSON.stringify(data));
+        const unique = dedupe(data);
+        setPhones(unique);
+        sessionStorage.setItem(cacheKey, JSON.stringify(unique));
       } catch (err) {
         setError(err.message);
       } finally {

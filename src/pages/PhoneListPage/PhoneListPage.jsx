@@ -7,7 +7,7 @@ function PhoneListPage() {
   const { phones, loading, error, query, setQuery } = usePhones();
 
   return (
-    <main className="phone-list-page">
+    <main className="phone-list-page container container--xl">
       <SearchBar value={query} onChange={setQuery} count={phones.length} />
 
       {loading && (
