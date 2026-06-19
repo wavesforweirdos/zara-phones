@@ -1,43 +1,36 @@
+@use '../../styles/mixins/index' as *;
+
 .search-bar {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 12px var(--space-6xl);
+  padding-top: 48px;
+  padding-bottom: 48px;
   background: var(--color-white);
 
-  @media (max-width: 768px) {
-    padding: 12px var(--space-lg);
+  &__input {
+    width: 100%;
+    border: none;
+    border-bottom: 0.5px solid #000000;
+    @include text-md;
+    vertical-align: middle;
+    color: var(--color-black);
+    background: transparent;
+    outline: none;
+    padding-bottom: var(--space-sm);
+
+    &::placeholder {
+      color: #aaaaaa;
+    }
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
   }
-}
 
-.search-bar__input {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid var(--color-black);
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 19px;
-  color: var(--color-black);
-  background: transparent;
-  outline: none;
-  padding-bottom: var(--space-sm);
-
-  &::placeholder {
-    color: var(--color-gray-medium);
+  &__count {
+    @include text-sm;
+    color: #000000;
   }
-
-  // Remove default search input decorations
-  &::-webkit-search-decoration,
-  &::-webkit-search-cancel-button {
-    appearance: none;
-  }
-}
-
-.search-bar__count {
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 15px;
-  color: var(--color-black);
-  text-transform: uppercase;
 }
