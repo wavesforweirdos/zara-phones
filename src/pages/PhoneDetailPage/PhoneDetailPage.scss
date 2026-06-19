@@ -1,0 +1,126 @@
+@use '../../styles/mixins/index' as *;
+
+.phone-detail-page {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-5xl);
+
+  &__status {
+    padding-top: var(--space-4xl);
+    @include text-sm;
+    color: var(--color-black);
+
+    &--error {
+      color: var(--color-error);
+    }
+  }
+
+  &__back {
+    display: inline-block;
+    @include text-sm;
+    color: var(--color-black);
+    text-decoration: none;
+    margin-bottom: var(--space-4xl);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__product {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4xl);
+    margin-bottom: var(--space-5xl);
+
+    @include desktop {
+      grid-template-columns: 510px 380px;
+      gap: 170px;
+      justify-content: center;
+      align-items: start;
+    }
+  }
+
+  &__image-wrapper {
+    width: 100%;
+    aspect-ratio: 510 / 630;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-white);
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5xl);
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  &__name {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 29px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--color-black);
+  }
+
+  &__price {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: var(--color-black);
+  }
+
+  &__selectors {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4xl);
+  }
+
+  &__add-btn {
+    width: 100%;
+    height: 56px;
+    background: var(--color-black-soft);
+    color: var(--color-white);
+    @include text-button;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-xl) var(--space-3xl);
+
+    @include desktop {
+      width: 380px;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--color-black);
+    }
+
+    &--disabled,
+    &:disabled {
+      background: var(--color-gray-lighter);
+      color: var(--color-gray-medium);
+      cursor: not-allowed;
+    }
+  }
+
+  .specs-table {
+    margin-bottom: var(--space-5xl);
+  }
+
+  .similar-phones {
+    margin-top: var(--space-5xl);
+  }
+}
