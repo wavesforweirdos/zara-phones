@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
 import PhoneListPage from './pages/PhoneListPage/PhoneListPage';
 import PhoneDetailPage from './pages/PhoneDetailPage/PhoneDetailPage';
 import CartPage from './pages/CartPage/CartPage';
@@ -6,6 +7,7 @@ import CartPage from './pages/CartPage/CartPage';
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<PhoneListPage />} />
         <Route path="/phone/:id" element={<PhoneDetailPage />} />
