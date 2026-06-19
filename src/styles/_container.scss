@@ -1,0 +1,35 @@
+@use 'mixins/index' as *;
+
+.container {
+  width: 100%;
+
+  &--xl {
+    padding-left: var(--space-6xl);
+    padding-right: var(--space-6xl);
+
+    @include mobile {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+  }
+
+  &--lg {
+    padding-left: var(--space-4xl);
+    padding-right: var(--space-4xl);
+
+    @include mobile {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+  }
+
+  &--md {
+    padding-left: var(--space-2xl);
+    padding-right: var(--space-2xl);
+
+    @include mobile {
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+  }
+}
