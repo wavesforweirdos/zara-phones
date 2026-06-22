@@ -1,0 +1,35 @@
+@use '../../styles/mixins/index' as *;
+
+.specs-table {
+  &__title {
+    @include text-lg;
+    color: var(--color-black);
+    padding-bottom: var(--space-4xl);
+    border-bottom: 0.5px solid var(--color-black);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 0.5px solid var(--color-black);
+  }
+
+  &__label {
+    @include text-sm;
+    color: var(--color-black);
+    flex: 1;
+  }
+
+  &__value {
+    @include text-sm;
+    color: var(--color-black);
+    text-transform: none;
+    flex: 2;
+  }
+}

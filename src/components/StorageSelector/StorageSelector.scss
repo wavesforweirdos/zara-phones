@@ -1,0 +1,39 @@
+@use '../../styles/mixins/index' as *;
+
+.storage-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+
+  &__label {
+    @include text-sm;
+    font-size: 14px;
+    color: var(--color-black);
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__chip {
+    @include text-sm;
+    font-size: 14px;
+    padding: var(--space-2xl) var(--space-2xl);
+    outline: 0.5px solid var(--color-gray-light);
+    background: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    position: relative;
+
+    &--selected {
+      outline: unset;
+      border: 0.5px solid var(--color-black);
+      z-index: 1;
+    }
+
+    &:hover:not(&--selected) {
+      border-color: var(--color-black);
+    }
+  }
+}

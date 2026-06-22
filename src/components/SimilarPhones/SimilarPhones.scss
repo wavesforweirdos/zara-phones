@@ -1,0 +1,86 @@
+﻿@use '../../styles/mixins/index' as *;
+
+.similar-phones {
+  padding-left: var(--space-xl);
+  padding-top: var(--space-5xl);
+  padding-bottom: var(--space-5xl);
+
+  @include tablet {
+    padding-left: var(--space-4xl);
+  }
+
+  @include desktop {
+    padding-left: var(--space-6xl);
+  }
+
+  &__title {
+    @include text-lg;
+    text-transform: uppercase;
+    color: var(--color-black);
+    padding-bottom: var(--space-4xl);
+  }
+
+  &__grid {
+    display: flex;
+    overflow-x: auto;
+    list-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > li {
+      flex: 0 0 95%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 0.5px solid var(--color-black);
+      display: flex;
+
+      &:not(:last-child) {
+        border-right: unset;
+      }
+    }
+
+    @include tablet {
+      li {
+        flex: 0 0 50%;
+      }
+    }
+
+    @include desktop {
+      li {
+        flex: 0 0 26.5%;
+      }
+    }
+  }
+
+  &__scrollbar-track {
+    height: 1px;
+    background: var(--color-gray-light);
+    position: relative;
+    margin-top: var(--space-4xl);
+    margin-right: var(--space-xl);
+
+    @include tablet {
+      margin-right: var(--space-4xl);
+    }
+
+    @include desktop {
+      margin-right: var(--space-6xl);
+    }
+  }
+
+  &__scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--color-black);
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}

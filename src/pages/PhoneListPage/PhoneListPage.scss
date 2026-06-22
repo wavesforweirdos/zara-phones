@@ -1,4 +1,4 @@
-﻿@use '../../styles/mixins/index' as *;
+@use '../../styles/mixins/index' as *;
 
 .phone-list-page {
   min-height: calc(100vh - 80px);
@@ -18,11 +18,18 @@
     display: grid;
     grid-template-columns: 1fr;
     list-style: none;
-    border-top: 0.5px solid var(--color-black);
     border-left: 0.5px solid var(--color-black);
-
+    
+    &:has(li) {
+      border-top: 0.5px solid var(--color-black);
+    }
+    
     > li {
-      display: contents;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-right: 0.5px solid var(--color-black);
+      border-bottom: 0.5px solid var(--color-black);
+      display: flex;
     }
 
     @include tablet {
@@ -38,4 +45,3 @@
     }
   }
 }
-
