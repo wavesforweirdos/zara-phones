@@ -2,7 +2,6 @@
 
 .phone-detail-page {
   padding-top: var(--space-2xl);
-  padding-bottom: var(--space-5xl);
 
   &__status {
     padding-top: var(--space-4xl);
@@ -15,15 +14,30 @@
   }
 
   &__back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
     @include text-sm;
     color: var(--color-black);
     text-decoration: none;
     margin-bottom: var(--space-4xl);
 
+    @include tablet {
+      display: none;
+    }
+
+    @include desktop {
+      display: inline-flex;
+    }
+
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  &__back-icon {
+    width: 20px;
+    height: 20px;
   }
 
   &__product {
@@ -32,21 +46,18 @@
     gap: var(--space-4xl);
     margin-bottom: var(--space-5xl);
 
-    @include desktop {
-      grid-template-columns: 510px 380px;
-      gap: 170px;
-      justify-content: center;
-      align-items: start;
+    @include tablet {
+      grid-template-columns: 1fr 362px;
+      justify-content: space-between;
     }
-  }
 
-  &__image-wrapper {
-    width: 100%;
-    aspect-ratio: 510 / 630;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-white);
+    @include desktop {
+      grid-template-columns: 40%  380px;
+    }
+    
+    @include widescreen {
+      gap: 170px;
+    }
   }
 
   &__image {
@@ -68,19 +79,15 @@
   }
 
   &__name {
-    font-size: 24px;
-    font-weight: 300;
+    @include text-xl;
     line-height: 29px;
-    letter-spacing: 0;
-    text-transform: uppercase;
     color: var(--color-black);
   }
 
   &__price {
-    font-size: 20px;
-    font-weight: 300;
+    @include text-xl;
+    text-transform: none;
     line-height: 24px;
-    letter-spacing: 0;
     color: var(--color-black);
   }
 
@@ -92,7 +99,7 @@
 
   &__add-btn {
     width: 100%;
-    height: 56px;
+    height: 48px;
     background: var(--color-black-soft);
     color: var(--color-white);
     @include text-button;
@@ -102,6 +109,7 @@
 
     @include desktop {
       width: 380px;
+      height: 56px;
     }
 
     &:hover:not(:disabled) {
@@ -118,9 +126,5 @@
 
   .specs-table {
     margin-bottom: var(--space-5xl);
-  }
-
-  .similar-phones {
-    margin-top: var(--space-5xl);
   }
 }

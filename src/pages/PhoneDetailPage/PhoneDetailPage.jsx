@@ -6,6 +6,7 @@ import StorageSelector from '../../components/StorageSelector/StorageSelector';
 import ColorSelector from '../../components/ColorSelector/ColorSelector';
 import SpecsTable from '../../components/SpecsTable/SpecsTable';
 import SimilarPhones from '../../components/SimilarPhones/SimilarPhones';
+import chevronIcon from '../../assets/chevron.svg';
 import './PhoneDetailPage.scss';
 
 function PhoneDetailPage() {
@@ -19,18 +20,22 @@ function PhoneDetailPage() {
 
   if (loading) {
     return (
-      <main className="phone-detail-page container container--xl">
-        <p className="phone-detail-page__status">Cargando...</p>
+      <main className="phone-detail-page">
+        <div className="container container--xl">
+          <p className="phone-detail-page__status">Cargando...</p>
+        </div>
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="phone-detail-page container container--xl">
-        <p className="phone-detail-page__status phone-detail-page__status--error">
-          Error al cargar el teléfono.
-        </p>
+      <main className="phone-detail-page">
+        <div className="container container--xl">
+          <p className="phone-detail-page__status phone-detail-page__status--error">
+            Error al cargar el teléfono.
+          </p>
+        </div>
       </main>
     );
   }
@@ -58,56 +63,59 @@ function PhoneDetailPage() {
   };
 
   return (
-    <main className="phone-detail-page container container--xl">
-      <Link to="/" className="phone-detail-page__back">
-        &lt; BACK
-      </Link>
+    <main className="phone-detail-page">
+      <div className="phone-detail-page__content container container--xl">
+        <Link to="/" className="phone-detail-page__back">
+          <img src={chevronIcon} alt="" aria-hidden="true" className="phone-detail-page__back-icon" />
+          BACK
+        </Link>
 
-      <section className="phone-detail-page__product" aria-label="Información del producto">
-        <div className="phone-detail-page__image-wrapper">
-          <img
-            src={imageUrl}
-            alt={`${phone.brand} ${phone.name}`}
-            className="phone-detail-page__image"
-          />
-        </div>
-
-        <div className="phone-detail-page__info">
-          <div className="phone-detail-page__header">
-            <h1 className="phone-detail-page__name">{phone.name}</h1>
-            <p className="phone-detail-page__price">{price}</p>
-          </div>
-
-          <div className="phone-detail-page__selectors">
-            <StorageSelector
-              options={phone.storageOptions}
-              selected={selectedStorage}
-              onChange={setSelectedStorage}
-            />
-            <ColorSelector
-              options={phone.colorOptions}
-              selected={selectedColor}
-              onChange={setSelectedColor}
+        <section className="phone-detail-page__product" aria-label="Información del producto">
+          <div className="phone-detail-page__image-wrapper">
+            <img
+              src={imageUrl}
+              alt={`${phone.brand} ${phone.name}`}
+              className="phone-detail-page__image"
             />
           </div>
 
-          <button
-            type="button"
-            className={`phone-detail-page__add-btn${!canAdd ? ' phone-detail-page__add-btn--disabled' : ''}`}
-            disabled={!canAdd}
-            onClick={handleAdd}
-          >
-            AÑADIR
-          </button>
-        </div>
-      </section>
+          <div className="phone-detail-page__info">
+            <div className="phone-detail-page__header">
+              <h1 className="phone-detail-page__name">{phone.name}</h1>
+              <p className="phone-detail-page__price">{price}</p>
+            </div>
 
-      <SpecsTable
-        brand={phone.brand}
-        name={phone.name}
-        description={phone.description}
-        specs={phone.specs}
-      />
+            <div className="phone-detail-page__selectors">
+              <StorageSelector
+                options={phone.storageOptions}
+                selected={selectedStorage}
+                onChange={setSelectedStorage}
+              />
+              <ColorSelector
+                options={phone.colorOptions}
+                selected={selectedColor}
+                onChange={setSelectedColor}
+              />
+            </div>
+
+            <button
+              type="button"
+              className={`phone-detail-page__add-btn${!canAdd ? ' phone-detail-page__add-btn--disabled' : ''}`}
+              disabled={!canAdd}
+              onClick={handleAdd}
+            >
+              AÑADIR
+            </button>
+          </div>
+        </section>
+
+        <SpecsTable
+          brand={phone.brand}
+          name={phone.name}
+          description={phone.description}
+          specs={phone.specs}
+        />
+      </div>
 
       <SimilarPhones products={phone.similarProducts} />
     </main>
