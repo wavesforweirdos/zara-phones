@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import PhoneListPage from './PhoneListPage';
 
@@ -6,6 +7,7 @@ jest.mock('../../hooks/usePhones', () => jest.fn());
 jest.mock('../../services/api', () => ({ fetchProductById: jest.fn() }));
 
 import usePhones from '../../hooks/usePhones';
+import { fetchProductById } from '../../services/api';
 
 const mockPhones = [
   { id: '1', name: 'Galaxy S24', brand: 'Samsung', basePrice: 999, imageUrl: 'img1.jpg' },
@@ -13,6 +15,9 @@ const mockPhones = [
 ];
 
 describe('PhoneListPage', () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+  });
   it('renderiza el SearchBar', () => {
     usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
     render(
@@ -62,5 +67,30 @@ describe('PhoneListPage', () => {
       </MemoryRouter>
     );
     expect(screen.getByText('Error al cargar los teléfonos.')).toBeInTheDocument();
+  });
+
+  it('al seleccionar un color filtra los teléfonos y actualiza el contador', async () => {
+    const user = userEvent.setup();
+
+    // Phone 1 has Black, phone 2 has only White — only phone 1 should survive the filter
+    fetchProductById
+      .mockResolvedValueOnce({ id: '1', colorOptions: [{ name: 'Black', hexCode: '#000000' }] })
+      .mockResolvedValueOnce({ id: '2', colorOptions: [{ name: 'White', hexCode: '#FFFFFF' }] });
+
+    usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
+
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('2 RESULTS')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Color: Black' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('1 RESULTS')).toBeInTheDocument();
+    });
   });
 });
