@@ -1,0 +1,66 @@
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import PhoneListPage from './PhoneListPage';
+
+jest.mock('../../hooks/usePhones', () => jest.fn());
+jest.mock('../../services/api', () => ({ fetchProductById: jest.fn() }));
+
+import usePhones from '../../hooks/usePhones';
+
+const mockPhones = [
+  { id: '1', name: 'Galaxy S24', brand: 'Samsung', basePrice: 999, imageUrl: 'img1.jpg' },
+  { id: '2', name: 'iPhone 15', brand: 'Apple', basePrice: 1099, imageUrl: 'img2.jpg' },
+];
+
+describe('PhoneListPage', () => {
+  it('renderiza el SearchBar', () => {
+    usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+  });
+
+  it('muestra el contador de resultados', () => {
+    usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('2 RESULTS')).toBeInTheDocument();
+  });
+
+  it('renderiza una PhoneCard por cada teléfono del mock', () => {
+    usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Galaxy S24')).toBeInTheDocument();
+    expect(screen.getByText('iPhone 15')).toBeInTheDocument();
+  });
+
+  it('con loading: true muestra estado de carga', () => {
+    usePhones.mockReturnValue({ phones: [], loading: true, error: null });
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
+  });
+
+  it('con error muestra mensaje de error', () => {
+    usePhones.mockReturnValue({ phones: [], loading: false, error: 'Network error' });
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Error al cargar los teléfonos.')).toBeInTheDocument();
+  });
+});
