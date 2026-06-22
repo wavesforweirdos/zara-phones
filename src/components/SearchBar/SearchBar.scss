@@ -78,16 +78,13 @@
 
   // ── Color swatches ────────────────────────────────────
   &__color-options {
-    // Mobile: hidden by default
     display: none;
-    align-items: center;
     gap: $space-lg;
+    margin-left: auto;
+    margin-right: $space-md + 4px;
 
-    // Tablet+: always visible, pushed to the right
     @include tablet {
-      display: flex;
-      margin-left: auto;
-      margin-right: $space-md + 4px;
+      display: none;
     }
 
     &::-webkit-scrollbar {
@@ -98,8 +95,9 @@
   // Mobile: show swatches when filter panel is open
   &--filter-open &__color-options {
     display: flex;
-    flex: 1;
-    overflow-x: auto;
+    @include tablet {
+      display: none;
+    }
   }
 
   // ── Filter toggle (mobile only) ───────────────────────
