@@ -2,18 +2,24 @@
 @use '../../styles/variables' as *;
 
 .cart-page {
-  padding-top: var(--space-2xl);
-  padding-bottom: var(--space-5xl);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-  &__empty-wrapper {
-    display: flex;
-    justify-content: center;
-    padding-top: var(--space-5xl);
+  // ── Content ───────────────────────────────────────────
+  &__content {
+    flex: 1;
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
   }
 
-  &__empty {
-    @include m.text-sm;
-    color: var(--color-gray-medium);
+  &__title {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-black);
+    margin-bottom: var(--space-2xl);
   }
 
   // ── List ──────────────────────────────────────────────
@@ -72,11 +78,7 @@
     gap: var(--space-xs);
   }
 
-  &__item-name {
-    @include m.text-sm;
-    color: var(--color-black);
-  }
-
+  &__item-name,
   &__item-specs {
     @include m.text-sm;
     color: var(--color-black);
@@ -96,7 +98,7 @@
     cursor: pointer;
     @include m.text-sm;
     text-transform: none;
-    color: $color-error;
+    color: #ec1d24;
 
     &:hover {
       opacity: 0.7;
@@ -104,29 +106,42 @@
   }
 
   // ── Footer ────────────────────────────────────────────
+  // Mobile: __total (full-width row) then __continue + __pay (shared row)
+  // Tablet+: __continue (left, margin-right: auto) | __total | __pay
   &__footer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xl);
-    padding-top: var(--space-2xl);
+    position: sticky;
+    bottom: 0;
+    background: $color-white;
     border-top: 1px solid var(--color-black);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-xl);
 
     @include m.tablet {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-5xl);
+      flex-wrap: nowrap;
       height: 56px;
-      padding-top: 0;
-      border-top: 1px solid var(--color-black);
-      margin-top: var(--space-sm);
+      padding: 0 var(--space-4xl);
+      gap: var(--space-4xl);
+    }
+
+    @include m.desktop {
+      padding: 0 var(--space-6xl);
     }
   }
 
   &__total {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: var(--space-3xl);
+    order: 1;
+
+    @include m.tablet {
+      width: auto;
+      order: 2;
+    }
   }
 
   &__total-label,
@@ -138,24 +153,59 @@
     color: var(--color-black);
   }
 
-  &__cta {
+  &__continue {
+    flex: 1;
+    order: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     height: 48px;
-    background: var(--color-black-soft);
-    color: var(--color-white);
+    background: transparent;
+    border: 1px solid $color-black;
+    color: $color-black;
     text-decoration: none;
     @include m.text-button;
 
     @include m.tablet {
-      width: 260px;
+      flex: none;
+      order: 1;
+      width: 200px;
       height: 56px;
+      margin-right: auto;
+    }
+
+    @include m.desktop {
+      width: 260px;
     }
 
     &:hover {
-      background: var(--color-black);
+      background: $color-black;
+      color: $color-white;
+    }
+  }
+
+  &__pay {
+    flex: 1;
+    order: 3;
+    height: 48px;
+    background: $color-black;
+    color: $color-white;
+    border: none;
+    cursor: pointer;
+    @include m.text-button;
+
+    @include m.tablet {
+      flex: none;
+      width: 200px;
+      height: 56px;
+    }
+
+    @include m.desktop {
+      width: 260px;
+    }
+
+    &:hover {
+      background: $color-black-soft;
     }
   }
 }
