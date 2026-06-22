@@ -36,12 +36,13 @@
   }
 
   &__bag-icon {
-    width: 33px;
-    height: 26px;
+    width: 18px;
+    height: 18px;
   }
 
   &__cart-count {
     @include text-md;
+    text-transform: uppercase;
     color: var(--color-black);
   }
 }
