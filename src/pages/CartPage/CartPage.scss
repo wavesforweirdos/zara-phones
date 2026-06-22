@@ -1,0 +1,211 @@
+@use '../../styles/mixins/index' as m;
+@use '../../styles/variables' as *;
+
+.cart-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  // ── Content ───────────────────────────────────────────
+  &__content {
+    flex: 1;
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-black);
+    margin-bottom: var(--space-2xl);
+  }
+
+  // ── List ──────────────────────────────────────────────
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--color-gray-light);
+  }
+
+  // ── Item ──────────────────────────────────────────────
+  &__item {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid var(--color-gray-light);
+
+    @include m.tablet {
+      gap: var(--space-4xl);
+    }
+  }
+
+  &__item-image {
+    width: 80px;
+    height: 100px;
+    object-fit: contain;
+    flex-shrink: 0;
+
+    @include m.tablet {
+      width: 160px;
+      height: 200px;
+    }
+
+    @include m.desktop {
+      width: 262px;
+      height: 324px;
+    }
+  }
+
+  &__item-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+
+    @include m.desktop {
+      padding: var(--space-4xl) 0;
+    }
+  }
+
+  &__item-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  &__item-name,
+  &__item-specs {
+    @include m.text-sm;
+    color: var(--color-black);
+  }
+
+  &__item-price {
+    @include m.text-sm;
+    color: var(--color-black);
+    margin-top: var(--space-xs);
+  }
+
+  &__item-remove {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    @include m.text-sm;
+    text-transform: none;
+    color: #ec1d24;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  // ── Footer ────────────────────────────────────────────
+  // Mobile: __total (full-width row) then __continue + __pay (shared row)
+  // Tablet+: __continue (left, margin-right: auto) | __total | __pay
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    background: $color-white;
+    border-top: 1px solid var(--color-black);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-xl);
+
+    @include m.tablet {
+      flex-wrap: nowrap;
+      height: 56px;
+      padding: 0 var(--space-4xl);
+      gap: var(--space-4xl);
+    }
+
+    @include m.desktop {
+      padding: 0 var(--space-6xl);
+    }
+  }
+
+  &__total {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xl);
+    order: 1;
+
+    @include m.tablet {
+      width: auto;
+      order: 2;
+    }
+  }
+
+  &__total-label,
+  &__total-amount {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-transform: uppercase;
+    color: var(--color-black);
+  }
+
+  &__continue {
+    flex: 1;
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    background: transparent;
+    border: 1px solid $color-black;
+    color: $color-black;
+    text-decoration: none;
+    @include m.text-button;
+
+    @include m.tablet {
+      flex: none;
+      order: 1;
+      width: 200px;
+      height: 56px;
+      margin-right: auto;
+    }
+
+    @include m.desktop {
+      width: 260px;
+    }
+
+    &:hover {
+      background: $color-black;
+      color: $color-white;
+    }
+  }
+
+  &__pay {
+    flex: 1;
+    order: 3;
+    height: 48px;
+    background: $color-black;
+    color: $color-white;
+    border: none;
+    cursor: pointer;
+    @include m.text-button;
+
+    @include m.tablet {
+      flex: none;
+      width: 200px;
+      height: 56px;
+    }
+
+    @include m.desktop {
+      width: 260px;
+    }
+
+    &:hover {
+      background: $color-black-soft;
+    }
+  }
+}
