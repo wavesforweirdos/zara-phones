@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import usePhone from '../../hooks/usePhone';
 import { useCart } from '../../context/CartContext';
+import Button from '../../components/Button/Button';
 import StorageSelector from '../../components/StorageSelector/StorageSelector';
 import ColorSelector from '../../components/ColorSelector/ColorSelector';
 import SpecsTable from '../../components/SpecsTable/SpecsTable';
@@ -65,10 +66,14 @@ function PhoneDetailPage() {
   return (
     <main className="phone-detail-page">
       <div className="phone-detail-page__content container container--xl">
-        <Link to="/" className="phone-detail-page__back">
+        <button
+          type="button"
+          className="phone-detail-page__back"
+          onClick={() => navigate(window.history.length > 1 ? -1 : '/')}
+        >
           <img src={chevronIcon} alt="" aria-hidden="true" className="phone-detail-page__back-icon" />
           BACK
-        </Link>
+        </button>
 
         <section className="phone-detail-page__product" aria-label="Información del producto">
           <div className="phone-detail-page__image-wrapper">
@@ -98,14 +103,13 @@ function PhoneDetailPage() {
               />
             </div>
 
-            <button
-              type="button"
-              className={`phone-detail-page__add-btn${!canAdd ? ' phone-detail-page__add-btn--disabled' : ''}`}
+            <Button
+              className="phone-detail-page__add-btn"
               disabled={!canAdd}
               onClick={handleAdd}
             >
               AÑADIR
-            </button>
+            </Button>
           </div>
         </section>
 
