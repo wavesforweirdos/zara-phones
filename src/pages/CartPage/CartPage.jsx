@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import Button from '../../components/Button/Button';
 import './CartPage.scss';
 
 function CartPage() {
@@ -23,14 +24,16 @@ function CartPage() {
           <ul className="cart-page__list">
             {cart.map((item) => (
               <li key={`${item.id}-${item.color}-${item.storage}`} className="cart-page__item">
-                <img
-                  src={item.imageUrl}
-                  alt={`${item.brand} ${item.name}`}
-                  className="cart-page__item-image"
-                />
+                <Link to={`/phone/${item.id}`} className="cart-page__item-image-link">
+                  <img
+                    src={item.imageUrl}
+                    alt={`${item.brand} ${item.name}`}
+                    className="cart-page__item-image"
+                  />
+                </Link>
                 <div className="cart-page__item-body">
                   <div className="cart-page__item-details">
-                    <p className="cart-page__item-name">{item.name}</p>
+                    <Link to={`/phone/${item.id}`} className="cart-page__item-name">{item.name}</Link>
                     <p className="cart-page__item-specs">
                       {item.storage} | {item.color}
                     </p>
@@ -52,20 +55,24 @@ function CartPage() {
       </div>
 
       <footer className="cart-page__footer">
-        {hasItems && (
-          <div className="cart-page__total">
-            <span className="cart-page__total-label">TOTAL</span>
-            <span className="cart-page__total-amount">{cartTotal} EUR</span>
-          </div>
-        )}
-        <Link to="/" className="cart-page__continue">
-          CONTINUE SHOPPING
-        </Link>
-        {hasItems && (
-          <button type="button" className="cart-page__pay">
-            PAY
-          </button>
-        )}
+        <div className="cart-page__footer-inner container container--xl">
+          {hasItems && (
+            <div className="cart-page__total">
+              <span className="cart-page__total-label">TOTAL</span>
+              <span className="cart-page__total-amount">{cartTotal} EUR</span>
+            </div>
+          )}
+          <Link to="/" className="cart-page__continue">
+            <Button variant="secondary" className="cart-page__continue-btn">
+              CONTINUE SHOPPING
+            </Button>
+          </Link>
+          {hasItems && (
+            <Button variant="primary" className="cart-page__pay">
+              PAY
+            </Button>
+          )}
+        </div>
       </footer>
     </main>
   );

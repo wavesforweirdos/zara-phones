@@ -40,7 +40,7 @@
 
   &__item-image-link {
     flex-shrink: 0;
-    width: 40%;
+    width: 50%;
 
     @include m.tablet {
       width: 35%;
@@ -101,7 +101,7 @@
     cursor: pointer;
     @include m.text-sm;
     text-transform: none;
-    color: $color-badge;
+    color: $color-error;
 
     &:hover {
       opacity: 0.7;
@@ -164,15 +164,23 @@
   &__continue {
     flex: 1;
     order: 2;
-    height: $height-btn-mobile;
     text-decoration: none;
+
+    .btn {
+      width: 100%;
+      height: $height-btn-mobile;
+    }
 
     @include m.tablet {
       flex: none;
       order: 1;
       width: 200px;
-      height: $space-5xl;
       margin-right: auto;
+
+      .btn {
+        width: 100%;
+        height: $space-5xl;
+      }
     }
 
     @include m.desktop {
@@ -184,6 +192,7 @@
     flex: 1;
     order: 3;
     height: $height-btn-mobile;
+    width: 100%;
 
     @include m.tablet {
       flex: none;
