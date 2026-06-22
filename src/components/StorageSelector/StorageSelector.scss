@@ -7,31 +7,33 @@
 
   &__label {
     @include text-sm;
+    font-size: 14px;
     color: var(--color-black);
   }
 
   &__options {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-sm);
   }
 
   &__chip {
     @include text-sm;
-    padding: var(--space-sm) var(--space-lg);
-    border: 0.5px solid var(--color-black);
+    font-size: 14px;
+    padding: var(--space-2xl) var(--space-2xl);
+    outline: 0.5px solid var(--color-gray-light);
     background: var(--color-white);
     color: var(--color-black);
     cursor: pointer;
+    position: relative;
 
     &--selected {
-      background: var(--color-black);
-      color: var(--color-white);
+      outline: unset;
+      border: 0.5px solid var(--color-black);
+      z-index: 1;
     }
 
     &:hover:not(&--selected) {
       border-color: var(--color-black);
-      background: var(--color-gray-lighter);
     }
   }
 }
