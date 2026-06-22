@@ -4,10 +4,15 @@
   width: 100%;
 
   &--xl {
-    padding-left: var(--space-lg);
-    padding-right: var(--space-lg);
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
 
     @include tablet {
+      padding-left: var(--space-4xl);
+      padding-right: var(--space-4xl);
+    }
+
+    @include desktop {
       padding-left: var(--space-6xl);
       padding-right: var(--space-6xl);
     }
@@ -18,6 +23,11 @@
     padding-right: var(--space-lg);
 
     @include tablet {
+      padding-left: var(--space-2xl);
+      padding-right: var(--space-2xl);
+    }
+
+    @include desktop {
       padding-left: var(--space-4xl);
       padding-right: var(--space-4xl);
     }
@@ -28,6 +38,11 @@
     padding-right: var(--space-lg);
 
     @include tablet {
+      padding-left: var(--space-xl);
+      padding-right: var(--space-xl);
+    }
+
+    @include desktop {
       padding-left: var(--space-2xl);
       padding-right: var(--space-2xl);
     }
