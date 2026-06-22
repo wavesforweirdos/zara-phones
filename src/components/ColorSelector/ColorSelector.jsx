@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import './ColorSelector.scss';
 
 function ColorSelector({ options, selected, onChange }) {
+  const [hovered, setHovered] = useState(null);
+
+  const displayName = hovered?.name ?? selected?.name ?? null;
+
   return (
     <div className="color-selector">
       <p className="color-selector__label">COLOR. PICK YOUR FAVOURITE.</p>
@@ -17,11 +22,13 @@ function ColorSelector({ options, selected, onChange }) {
               className={`color-selector__swatch${isSelected ? ' color-selector__swatch--selected' : ''}`}
               style={{ backgroundColor: option.hexCode }}
               onClick={() => onChange(option)}
+              onMouseEnter={() => setHovered(option)}
+              onMouseLeave={() => setHovered(null)}
             />
           );
         })}
       </div>
-      {selected && <p className="color-selector__name">{selected.name}</p>}
+      <p className="color-selector__name">{displayName ?? ' '}</p>
     </div>
   );
 }
