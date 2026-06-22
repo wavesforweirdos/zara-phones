@@ -2,9 +2,9 @@
 
 .specs-table {
   &__title {
-    @include text-sm;
+    @include text-lg;
     color: var(--color-black);
-    padding-bottom: var(--space-lg);
+    padding-bottom: var(--space-4xl);
     border-bottom: 0.5px solid var(--color-black);
   }
 
@@ -31,6 +31,5 @@
     color: var(--color-black);
     text-transform: none;
     flex: 2;
-    text-align: right;
   }
 }
