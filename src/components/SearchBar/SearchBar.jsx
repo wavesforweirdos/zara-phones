@@ -20,7 +20,10 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
   const activeCount = colorFilter.length;
 
   return (
-    <section className="search-bar" aria-label="Buscador de smartphones">
+    <section
+      className={`search-bar${filterOpen ? ' search-bar--filter-open' : ''}`}
+      aria-label="Buscador de smartphones"
+    >
       <div className="search-bar__input-wrapper">
         <input
           type="search"
@@ -43,7 +46,11 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
       </div>
 
       <div className="search-bar__meta">
-        {filterOpen ? (
+        <p className="search-bar__count" aria-live="polite" aria-atomic="true">
+          {count} RESULTS
+        </p>
+
+        {colorOptions.length > 0 && (
           <div className="search-bar__color-options" role="group" aria-label="Filtrar por color">
             {colorOptions.map((color) => (
               <button
@@ -57,10 +64,6 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
               />
             ))}
           </div>
-        ) : (
-          <p className="search-bar__count" aria-live="polite" aria-atomic="true">
-            {count} RESULTS
-          </p>
         )}
 
         {colorOptions.length > 0 && (

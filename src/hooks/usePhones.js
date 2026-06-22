@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchProducts } from '../services/api';
 import useDebounce from './useDebounce';
 
-function usePhones() {
-  const [query, setQuery] = useState('');
+function usePhones(query = '') {
   const [phones, setPhones] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -41,7 +40,7 @@ function usePhones() {
     load();
   }, [debouncedQuery]);
 
-  return { phones, loading, error, query, setQuery };
+  return { phones, loading, error };
 }
 
 export default usePhones;

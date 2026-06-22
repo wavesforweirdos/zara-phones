@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import usePhones from '../../hooks/usePhones';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import PhoneCard from '../../components/PhoneCard/PhoneCard';
@@ -9,7 +10,11 @@ import './PhoneListPage.scss';
 const COLOR_MAP_CACHE_KEY = 'phone_color_map';
 
 function PhoneListPage() {
-  const { phones, loading, error, query, setQuery } = usePhones();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('search') ?? '';
+  const setQuery = (val) => setSearchParams(val ? { search: val } : {}, { replace: true });
+
+  const { phones, loading, error } = usePhones(query);
   const [colorFilter, setColorFilter] = useState([]);
   // Map<id, hexCode[]> — built lazily on first color filter, cached in sessionStorage
   const [phoneColorMap, setPhoneColorMap] = useState(null);
