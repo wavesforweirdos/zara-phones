@@ -1,12 +1,13 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .phone-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
-  padding: var(--space-lg);
-  background: var(--color-white);
-  color: var(--color-black);
+  gap: $space-2xl;
+  padding: $space-lg;
+  background: $color-white;
+  color: $color-black;
   text-decoration: none;
   cursor: pointer;
   width: 100%;
@@ -18,7 +19,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--color-black);
+    background: $color-black;
     transform: scaleY(0);
     transform-origin: bottom;
     transition: transform 0.5s ease;
@@ -33,7 +34,7 @@
     .phone-card__brand,
     .phone-card__name,
     .phone-card__price {
-      color: var(--color-white);
+      color: $color-white;
     }
   }
 
@@ -57,7 +58,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: var(--space-sm);
+    gap: $space-sm;
     flex-shrink: 0;
     position: relative;
     z-index: 1;
@@ -66,27 +67,27 @@
   &__text {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: $space-xs;
     min-width: 0;
   }
 
   &__brand {
     @include text-xs;
     @include text-ellipsis;
-    color: #79736d;
+    color: $color-gray-warm;
     transition: color 0.35s ease;
   }
 
   &__name {
     @include text-sm;
     @include text-ellipsis;
-    color: #000000;
+    color: $color-black;
     transition: color 0.35s ease;
   }
 
   &__price {
     @include text-price;
-    color: #000000;
+    color: $color-black;
     text-align: right;
     white-space: nowrap;
     flex-shrink: 0;

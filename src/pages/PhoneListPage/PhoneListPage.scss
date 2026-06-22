@@ -1,16 +1,18 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .phone-list-page {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - #{$height-navbar});
+  padding-bottom: $space-7xl;
 
   &__status {
-    padding-top: var(--space-4xl);
-    padding-bottom: var(--space-4xl);
+    padding-top: $space-4xl;
+    padding-bottom: $space-4xl;
     @include text-sm;
-    color: var(--color-black);
+    color: $color-black;
 
     &--error {
-      color: var(--color-error);
+      color: $color-error;
     }
   }
 
@@ -18,17 +20,17 @@
     display: grid;
     grid-template-columns: 1fr;
     list-style: none;
-    border-left: 0.5px solid var(--color-black);
-    
+    border-left: $border-thin solid $color-black;
+
     &:has(li) {
-      border-top: 0.5px solid var(--color-black);
+      border-top: $border-thin solid $color-black;
     }
-    
+
     > li {
       aspect-ratio: 1;
       overflow: hidden;
-      border-right: 0.5px solid var(--color-black);
-      border-bottom: 0.5px solid var(--color-black);
+      border-right: $border-thin solid $color-black;
+      border-bottom: $border-thin solid $color-black;
       display: flex;
     }
 

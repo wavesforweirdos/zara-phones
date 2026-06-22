@@ -1,23 +1,24 @@
-﻿@use '../../styles/mixins/index' as *;
+@use '../../styles/variables' as *;
+@use '../../styles/mixins/index' as *;
 
 .similar-phones {
-  padding-left: var(--space-xl);
-  padding-top: var(--space-5xl);
-  padding-bottom: var(--space-5xl);
+  padding-left: $space-xl;
+  padding-top: $space-7xl;
+  padding-bottom: $space-7xl;
 
   @include tablet {
-    padding-left: var(--space-4xl);
+    padding-left: $space-4xl;
   }
 
   @include desktop {
-    padding-left: var(--space-6xl);
+    padding-left: $space-7xl;
   }
 
   &__title {
     @include text-lg;
     text-transform: uppercase;
-    color: var(--color-black);
-    padding-bottom: var(--space-4xl);
+    color: $color-black;
+    padding-bottom: $space-4xl;
   }
 
   &__grid {
@@ -34,7 +35,7 @@
       flex: 0 0 95%;
       aspect-ratio: 1;
       overflow: hidden;
-      border: 0.5px solid var(--color-black);
+      border: $border-thin solid $color-black;
       display: flex;
 
       &:not(:last-child) {
@@ -57,17 +58,17 @@
 
   &__scrollbar-track {
     height: 1px;
-    background: var(--color-gray-light);
+    background: $color-gray-light;
     position: relative;
-    margin-top: var(--space-4xl);
-    margin-right: var(--space-xl);
+    margin-top: $space-4xl;
+    margin-right: $space-xl;
 
     @include tablet {
-      margin-right: var(--space-4xl);
+      margin-right: $space-4xl;
     }
 
     @include desktop {
-      margin-right: var(--space-6xl);
+      margin-right: $space-7xl;
     }
   }
 
@@ -76,7 +77,7 @@
     top: 0;
     left: 0;
     height: 100%;
-    background: var(--color-black);
+    background: $color-black;
     cursor: grab;
 
     &:active {

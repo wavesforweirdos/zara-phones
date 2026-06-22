@@ -9,17 +9,14 @@
   // ── Content ───────────────────────────────────────────
   &__content {
     flex: 1;
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-2xl);
+    padding-top: $space-4xl;
+    padding-bottom: $space-2xl;
   }
 
   &__title {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1;
-    text-transform: uppercase;
-    color: var(--color-black);
-    margin-bottom: var(--space-2xl);
+    @include m.text-xl;
+    color: $color-black;
+    margin-bottom: $space-2xl;
   }
 
   // ── List ──────────────────────────────────────────────
@@ -27,37 +24,38 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    border-top: 1px solid var(--color-gray-light);
   }
 
   // ── Item ──────────────────────────────────────────────
   &__item {
     display: flex;
     flex-direction: row;
-    gap: var(--space-lg);
-    padding: var(--space-2xl) 0;
-    border-bottom: 1px solid var(--color-gray-light);
+    gap: $space-lg;
+    padding: $space-2xl 0;
 
     @include m.tablet {
-      gap: var(--space-4xl);
+      gap: $space-4xl;
+    }
+  }
+
+  &__item-image-link {
+    flex-shrink: 0;
+    width: 40%;
+
+    @include m.tablet {
+      width: 35%;
+    }
+
+    @include m.desktop {
+      width: 25%;
     }
   }
 
   &__item-image {
-    width: 80px;
-    height: 100px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    flex-shrink: 0;
-
-    @include m.tablet {
-      width: 160px;
-      height: 200px;
-    }
-
-    @include m.desktop {
-      width: 262px;
-      height: 324px;
-    }
+    display: block;
   }
 
   &__item-body {
@@ -65,29 +63,34 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-sm) 0;
+    padding: $space-sm 0;
 
     @include m.desktop {
-      padding: var(--space-4xl) 0;
+      padding: $space-4xl 0;
     }
   }
 
   &__item-details {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: $space-xs;
   }
 
-  &__item-name,
+  &__item-name {
+    @include m.text-sm;
+    color: $color-black;
+    text-decoration: none;
+  }
+
   &__item-specs {
     @include m.text-sm;
-    color: var(--color-black);
+    color: $color-black;
   }
 
   &__item-price {
     @include m.text-sm;
-    color: var(--color-black);
-    margin-top: var(--space-xs);
+    color: $color-black;
+    margin-top: $space-lg;
   }
 
   &__item-remove {
@@ -98,7 +101,7 @@
     cursor: pointer;
     @include m.text-sm;
     text-transform: none;
-    color: #ec1d24;
+    color: $color-badge;
 
     &:hover {
       opacity: 0.7;
@@ -112,22 +115,26 @@
     position: sticky;
     bottom: 0;
     background: $color-white;
-    border-top: 1px solid var(--color-black);
+  }
+
+  &__footer-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-lg) var(--space-xl);
+    row-gap: $space-2xl;
+    column-gap: $space-md-plus;
+    padding-top: $space-lg;
+    padding-bottom: $space-2xl;
 
     @include m.tablet {
       flex-wrap: nowrap;
-      height: 56px;
-      padding: 0 var(--space-4xl);
-      gap: var(--space-4xl);
+      height: $space-5xl;
+      padding-bottom: $space-4xl;
+      gap: $space-4xl;
     }
 
     @include m.desktop {
-      padding: 0 var(--space-6xl);
+      padding-bottom: $space-5xl;
     }
   }
 
@@ -135,7 +142,8 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: var(--space-3xl);
+    justify-content: space-between;
+    gap: $space-3xl;
     order: 1;
 
     @include m.tablet {
@@ -146,66 +154,45 @@
 
   &__total-label,
   &__total-amount {
-    font-size: 14px;
+    font-size: $font-size-label;
     font-weight: 400;
-    line-height: 17px;
+    line-height: $line-height-total;
     text-transform: uppercase;
-    color: var(--color-black);
+    color: $color-black;
   }
 
   &__continue {
     flex: 1;
     order: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    background: transparent;
-    border: 1px solid $color-black;
-    color: $color-black;
+    height: $height-btn-mobile;
     text-decoration: none;
-    @include m.text-button;
 
     @include m.tablet {
       flex: none;
       order: 1;
       width: 200px;
-      height: 56px;
+      height: $space-5xl;
       margin-right: auto;
     }
 
     @include m.desktop {
       width: 260px;
     }
-
-    &:hover {
-      background: $color-black;
-      color: $color-white;
-    }
   }
 
   &__pay {
     flex: 1;
     order: 3;
-    height: 48px;
-    background: $color-black;
-    color: $color-white;
-    border: none;
-    cursor: pointer;
-    @include m.text-button;
+    height: $height-btn-mobile;
 
     @include m.tablet {
       flex: none;
       width: 200px;
-      height: 56px;
+      height: $space-5xl;
     }
 
     @include m.desktop {
       width: 260px;
-    }
-
-    &:hover {
-      background: $color-black-soft;
     }
   }
 }

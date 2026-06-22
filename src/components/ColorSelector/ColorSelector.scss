@@ -1,28 +1,29 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .color-selector {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: $space-sm;
 
   &__label {
     @include text-sm;
-    font-size: 14px;
-    color: var(--color-black);
+    font-size: $font-size-label;
+    color: $color-black;
   }
 
   &__swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-lg);
-    padding: var(--space-md) 0 var(--space-sm);
+    gap: $space-lg;
+    padding: $space-md 0 $space-sm;
   }
 
   &__swatch {
     width: 20px;
     height: 20px;
     border: 1px solid transparent;
-    outline: 1px solid var(--color-gray-light);
+    outline: 1px solid $color-gray-light;
     outline-offset: 2px;
     cursor: pointer;
     padding: 0;
@@ -30,14 +31,14 @@
     -webkit-appearance: none;
 
     &--selected {
-      outline-color: var(--color-black);
+      outline-color: $color-black;
     }
   }
 
   &__name {
-    font-size: 12px;
+    font-size: $font-size-sm;
     font-weight: 300;
     line-height: 1;
-    color: var(--color-black);
+    color: $color-black;
   }
 }

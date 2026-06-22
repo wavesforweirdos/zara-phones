@@ -1,26 +1,31 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .phone-detail-page {
-  padding-top: var(--space-2xl);
+  padding-top: $space-2xl;
 
   &__status {
-    padding-top: var(--space-4xl);
+    padding-top: $space-4xl;
     @include text-sm;
-    color: var(--color-black);
+    color: $color-black;
 
     &--error {
-      color: var(--color-error);
+      color: $color-error;
     }
   }
 
   &__back {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: $space-xs;
     @include text-sm;
-    color: var(--color-black);
+    color: $color-black;
     text-decoration: none;
-    margin-bottom: var(--space-4xl);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin-bottom: $space-4xl;
 
     @include tablet {
       display: none;
@@ -43,8 +48,8 @@
   &__product {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-4xl);
-    margin-bottom: var(--space-5xl);
+    gap: $space-4xl;
+    margin-bottom: $space-6xl;
 
     @include tablet {
       grid-template-columns: 1fr 362px;
@@ -52,11 +57,11 @@
     }
 
     @include desktop {
-      grid-template-columns: 40%  380px;
+      grid-template-columns: 40% 380px;
     }
-    
+
     @include widescreen {
-      gap: 170px;
+      gap: $space-widescreen-gap;
     }
   }
 
@@ -69,62 +74,45 @@
   &__info {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5xl);
+    gap: $space-6xl;
   }
 
   &__header {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: $space-md;
   }
 
   &__name {
     @include text-xl;
-    line-height: 29px;
-    color: var(--color-black);
+    line-height: $line-height-name;
+    color: $color-black;
   }
 
   &__price {
     @include text-xl;
     text-transform: none;
-    line-height: 24px;
-    color: var(--color-black);
+    line-height: $line-height-price;
+    color: $color-black;
   }
 
   &__selectors {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4xl);
+    gap: $space-4xl;
   }
 
   &__add-btn {
     width: 100%;
-    height: 48px;
-    background: var(--color-black-soft);
-    color: var(--color-white);
-    @include text-button;
-    border: none;
-    cursor: pointer;
-    padding: var(--space-xl) var(--space-3xl);
+    height: $height-btn-mobile;
 
     @include desktop {
       width: 380px;
-      height: 56px;
-    }
-
-    &:hover:not(:disabled) {
-      background: var(--color-black);
-    }
-
-    &--disabled,
-    &:disabled {
-      background: var(--color-gray-lighter);
-      color: var(--color-gray-medium);
-      cursor: not-allowed;
+      height: $space-5xl;
     }
   }
 
   .specs-table {
-    margin-bottom: var(--space-5xl);
+    margin-bottom: $space-6xl;
   }
 }
