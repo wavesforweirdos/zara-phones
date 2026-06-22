@@ -136,4 +136,36 @@ describe('PhoneDetailPage', () => {
     expect(screen.getByText('Similar items')).toBeInTheDocument();
     expect(screen.getByText('Pixel 8')).toBeInTheDocument();
   });
+
+  it('con loading: true muestra estado de carga', () => {
+    usePhone.mockReturnValue({ phone: null, loading: true, error: null });
+    render(
+      <MemoryRouter>
+        <PhoneDetailPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
+  });
+
+  it('con error muestra mensaje de error en pantalla', () => {
+    usePhone.mockReturnValue({ phone: null, loading: false, error: 'Not found' });
+    render(
+      <MemoryRouter>
+        <PhoneDetailPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Error al cargar el teléfono.')).toBeInTheDocument();
+  });
+
+  it('el botón de volver llama a navigate(-1) cuando hay historial previo', () => {
+    window.history.pushState({}, '', '/previous');
+    window.history.pushState({}, '', '/current');
+    render(
+      <MemoryRouter>
+        <PhoneDetailPage />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'BACK' }));
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
+  });
 });
