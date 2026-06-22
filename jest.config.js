@@ -1,5 +1,6 @@
 module.exports = {
   testEnvironment: 'jsdom',
+  setupFiles: ['<rootDir>/jest.setup.polyfills.js'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
