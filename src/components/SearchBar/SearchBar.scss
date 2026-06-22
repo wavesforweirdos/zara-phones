@@ -1,12 +1,13 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .search-bar {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 48px;
-  padding-bottom: 48px;
-  background: var(--color-white);
+  gap: $space-md-plus;
+  padding-top: $height-btn-mobile;
+  padding-bottom: $height-btn-mobile;
+  background: $color-white;
 
   &__input-wrapper {
     position: relative;
@@ -17,17 +18,17 @@
   &__input {
     width: 100%;
     border: none;
-    border-bottom: 0.5px solid #000000;
+    border-bottom: $border-thin solid $color-black;
     @include text-md;
     vertical-align: middle;
-    color: var(--color-black);
+    color: $color-black;
     background: transparent;
     outline: none;
-    padding-bottom: var(--space-sm);
-    padding-right: var(--space-2xl);
+    padding-bottom: $space-sm;
+    padding-right: $space-2xl;
 
     &::placeholder {
-      color: #aaaaaa;
+      color: $color-gray-medium;
     }
 
     &::-webkit-search-decoration,
@@ -39,7 +40,7 @@
   &__clear {
     position: absolute;
     right: 0;
-    bottom: var(--space-sm);
+    bottom: $space-sm;
     background: none;
     border: none;
     cursor: pointer;
@@ -60,15 +61,53 @@
     min-height: 24px;
   }
 
+  // ── Count ─────────────────────────────────────────────
   &__count {
     @include text-sm;
-    color: #000000;
+    color: $color-black;
   }
 
+  // Mobile: hide count when filter panel is open
+  &--filter-open &__count {
+    display: none;
+
+    @include tablet {
+      display: block;
+    }
+  }
+
+  // ── Color swatches ────────────────────────────────────
+  &__color-options {
+    // Mobile: hidden by default
+    display: none;
+    align-items: center;
+    gap: $space-lg;
+
+    // Tablet+: always visible, pushed to the right
+    @include tablet {
+      display: flex;
+      margin-left: auto;
+      margin-right: $space-md + 4px;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Mobile: show swatches when filter panel is open
+  &--filter-open &__color-options {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+  }
+
+  // ── Filter toggle (mobile only) ───────────────────────
   &__filter-controls {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: $space-sm;
+    flex-shrink: 0;
 
     @include tablet {
       display: none;
@@ -76,7 +115,12 @@
   }
 
   &__filter-clear {
+    background: none;
+    border: none;
+    padding: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 
   &__filter-btn {
@@ -84,7 +128,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--color-black);
+    color: $color-black;
     padding: 0;
 
     &--active {
@@ -92,23 +136,12 @@
     }
   }
 
-  &__color-options {
-    display: flex;
-    align-items: center;
-    gap: var(--space-lg);
-    margin-left: auto;
-    margin-right: calc(var(--space-md) + 4px);
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
+  // ── Swatches ──────────────────────────────────────────
   &__color-swatch {
     width: 20px;
     height: 20px;
     border: 1px solid transparent;
-    outline: 1px solid var(--color-gray-light);
+    outline: 1px solid $color-gray-light;
     outline-offset: 2px;
     cursor: pointer;
     padding: 0;
@@ -117,7 +150,7 @@
     -webkit-appearance: none;
 
     &--selected {
-      outline-color: var(--color-black);
+      outline-color: $color-black;
     }
   }
 }

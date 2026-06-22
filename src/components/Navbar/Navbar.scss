@@ -1,14 +1,17 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .navbar {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 80px;
-  background: var(--color-white);
+  height: $height-navbar;
+  background: $color-white;
 
-  &--bordered {
-    border-bottom: 0.5px solid var(--color-gray-light);
+  @include desktop {
+    &--bordered {
+      border-bottom: 1px solid $color-black;
+    }
   }
 
   &__inner {
@@ -31,8 +34,8 @@
   &__cart {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
-    color: var(--color-black);
+    gap: $space-xs;
+    color: $color-black;
   }
 
   &__bag-icon {
@@ -43,6 +46,6 @@
   &__cart-count {
     @include text-md;
     text-transform: uppercase;
-    color: var(--color-black);
+    color: $color-black;
   }
 }

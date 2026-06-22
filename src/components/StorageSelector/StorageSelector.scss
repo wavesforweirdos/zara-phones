@@ -1,14 +1,15 @@
+@use '../../styles/variables' as *;
 @use '../../styles/mixins/index' as *;
 
 .storage-selector {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: $space-2xl;
 
   &__label {
     @include text-sm;
-    font-size: 14px;
-    color: var(--color-black);
+    font-size: $font-size-label;
+    color: $color-black;
   }
 
   &__options {
@@ -18,22 +19,22 @@
 
   &__chip {
     @include text-sm;
-    font-size: 14px;
-    padding: var(--space-2xl) var(--space-2xl);
-    outline: 0.5px solid var(--color-gray-light);
-    background: var(--color-white);
-    color: var(--color-black);
+    font-size: $font-size-label;
+    padding: $space-2xl $space-2xl;
+    outline: $border-thin solid $color-gray-light;
+    background: $color-white;
+    color: $color-black;
     cursor: pointer;
     position: relative;
 
     &--selected {
       outline: unset;
-      border: 0.5px solid var(--color-black);
+      border: $border-thin solid $color-black;
       z-index: 1;
     }
 
     &:hover:not(&--selected) {
-      border-color: var(--color-black);
+      border-color: $color-black;
     }
   }
 }

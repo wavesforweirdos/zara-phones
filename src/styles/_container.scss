@@ -1,50 +1,51 @@
+@use 'variables' as *;
 @use 'mixins/index' as *;
 
 .container {
   width: 100%;
 
   &--xl {
-    padding-left: var(--space-xl);
-    padding-right: var(--space-xl);
+    padding-left: $space-xl;
+    padding-right: $space-xl;
 
     @include tablet {
-      padding-left: var(--space-4xl);
-      padding-right: var(--space-4xl);
+      padding-left: $space-4xl;
+      padding-right: $space-4xl;
     }
 
     @include desktop {
-      padding-left: var(--space-6xl);
-      padding-right: var(--space-6xl);
+      padding-left: $space-7xl;
+      padding-right: $space-7xl;
     }
   }
 
   &--lg {
-    padding-left: var(--space-lg);
-    padding-right: var(--space-lg);
+    padding-left: $space-lg;
+    padding-right: $space-lg;
 
     @include tablet {
-      padding-left: var(--space-2xl);
-      padding-right: var(--space-2xl);
+      padding-left: $space-2xl;
+      padding-right: $space-2xl;
     }
 
     @include desktop {
-      padding-left: var(--space-4xl);
-      padding-right: var(--space-4xl);
+      padding-left: $space-4xl;
+      padding-right: $space-4xl;
     }
   }
 
   &--md {
-    padding-left: var(--space-lg);
-    padding-right: var(--space-lg);
+    padding-left: $space-lg;
+    padding-right: $space-lg;
 
     @include tablet {
-      padding-left: var(--space-xl);
-      padding-right: var(--space-xl);
+      padding-left: $space-xl;
+      padding-right: $space-xl;
     }
 
     @include desktop {
-      padding-left: var(--space-2xl);
-      padding-right: var(--space-2xl);
+      padding-left: $space-2xl;
+      padding-right: $space-2xl;
     }
   }
 }

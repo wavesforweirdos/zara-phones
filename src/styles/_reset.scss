@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 *,
 *::before,
 *::after {
@@ -14,8 +16,8 @@ html {
 
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: var(--color-white);
-  color: var(--color-black);
+  background-color: $color-white;
+  color: $color-black;
 }
 
 a {
