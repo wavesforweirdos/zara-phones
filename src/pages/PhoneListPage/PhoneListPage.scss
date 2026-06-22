@@ -18,9 +18,12 @@
     display: grid;
     grid-template-columns: 1fr;
     list-style: none;
-    border-top: 0.5px solid var(--color-black);
     border-left: 0.5px solid var(--color-black);
-
+    
+    &:has(li) {
+      border-top: 0.5px solid var(--color-black);
+    }
+    
     > li {
       aspect-ratio: 1;
       overflow: hidden;

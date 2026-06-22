@@ -1,7 +1,24 @@
+import { useState } from 'react';
 import closeIcon from '../../assets/close.svg';
 import './SearchBar.scss';
 
-function SearchBar({ value, onChange, count }) {
+function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = [], onColorFilter }) {
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const handleSwatchClick = (name) => {
+    const next = colorFilter.includes(name)
+      ? colorFilter.filter((n) => n !== name)
+      : [...colorFilter, name];
+    onColorFilter(next);
+  };
+
+  const handleClearColors = (e) => {
+    e.stopPropagation();
+    onColorFilter([]);
+  };
+
+  const activeCount = colorFilter.length;
+
   return (
     <section className="search-bar" aria-label="Buscador de smartphones">
       <div className="search-bar__input-wrapper">
@@ -24,9 +41,51 @@ function SearchBar({ value, onChange, count }) {
           </button>
         )}
       </div>
-      <p className="search-bar__count" aria-live="polite" aria-atomic="true">
-        {count} RESULTS
-      </p>
+
+      <div className="search-bar__meta">
+        {filterOpen ? (
+          <div className="search-bar__color-options" role="group" aria-label="Filtrar por color">
+            {colorOptions.map((color) => (
+              <button
+                key={color.hexCode}
+                type="button"
+                className={`search-bar__color-swatch${colorFilter.includes(color.name) ? ' search-bar__color-swatch--selected' : ''}`}
+                style={{ backgroundColor: color.hexCode }}
+                aria-label={`Color: ${color.name}`}
+                aria-pressed={colorFilter.includes(color.name)}
+                onClick={() => handleSwatchClick(color.name)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="search-bar__count" aria-live="polite" aria-atomic="true">
+            {count} RESULTS
+          </p>
+        )}
+
+        {colorOptions.length > 0 && (
+          <div className="search-bar__filter-controls">
+            <button
+              type="button"
+              className={`search-bar__filter-btn${activeCount > 0 ? ' search-bar__filter-btn--active' : ''}`}
+              aria-expanded={filterOpen}
+              onClick={() => setFilterOpen((prev) => !prev)}
+            >
+              {filterOpen ? 'CERRAR' : `FILTRAR${activeCount > 0 ? ` (${activeCount})` : ''}`}
+            </button>
+            {!filterOpen && activeCount > 0 && (
+              <button
+                type="button"
+                className="search-bar__filter-clear"
+                aria-label="Limpiar filtros de color"
+                onClick={handleClearColors}
+              >
+                <img src={closeIcon} alt="" aria-hidden="true" />
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }
