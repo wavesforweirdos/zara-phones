@@ -10,6 +10,7 @@ function PhoneCard({ id, name, brand, price, imageUrl }) {
           src={imageUrl}
           alt={`${brand} ${name}`}
           className="phone-card__image"
+          loading="lazy"
         />
       </div>
       <div className="phone-card__info">

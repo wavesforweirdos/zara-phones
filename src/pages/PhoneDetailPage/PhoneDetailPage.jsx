@@ -81,6 +81,7 @@ function PhoneDetailPage() {
               src={imageUrl}
               alt={`${phone.brand} ${phone.name}`}
               className="phone-detail-page__image"
+              loading="lazy"
             />
           </div>
 
