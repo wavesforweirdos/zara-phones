@@ -168,4 +168,26 @@ describe('PhoneDetailPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'BACK' }));
     expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
+
+  it('con phone null y loading false el componente no renderiza contenido', () => {
+    usePhone.mockReturnValue({ phone: null, loading: false, error: null });
+    const { container } = render(
+      <MemoryRouter>
+        <PhoneDetailPage />
+      </MemoryRouter>
+    );
+    expect(container.firstChild).toBeNull();
+  });
+
+  it('el botón de volver navega a / cuando window.history no tiene historial previo', () => {
+    const historySpy = jest.spyOn(window, 'history', 'get').mockReturnValue({ length: 1 });
+    render(
+      <MemoryRouter>
+        <PhoneDetailPage />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'BACK' }));
+    expect(mockNavigate).toHaveBeenCalledWith('/');
+    historySpy.mockRestore();
+  });
 });
