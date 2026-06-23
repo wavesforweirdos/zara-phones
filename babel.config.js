@@ -1,5 +1,8 @@
 module.exports = (api) => {
+  api.cache(true);
   const isTest = api.env('test');
+  const isDevelopment = api.env('development');
+
   return {
     presets: [
       [
@@ -9,7 +12,7 @@ module.exports = (api) => {
           modules: isTest ? 'commonjs' : false,
         },
       ],
-      ['@babel/preset-react', { runtime: 'automatic' }],
+      ['@babel/preset-react', { runtime: 'automatic', development: isDevelopment }],
     ],
   };
 };
