@@ -24,9 +24,7 @@ const cartReducer = (state, action) => {
 
     case 'REMOVE_ITEM': {
       const { id, color, storage } = action.payload;
-      return state.filter(
-        (i) => !(i.id === id && i.color === color && i.storage === storage)
-      );
+      return state.filter((i) => !(i.id === id && i.color === color && i.storage === storage));
     }
 
     default:

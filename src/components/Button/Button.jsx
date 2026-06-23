@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Button.scss';
 
-const Button = ({ children, variant = 'primary', disabled = false, onClick, type = 'button', className = '' }) => {
+const Button = ({
+  children,
+  variant = 'primary',
+  disabled = false,
+  onClick,
+  type = 'button',
+  className = '',
+}) => {
   return (
     <button
       type={type}

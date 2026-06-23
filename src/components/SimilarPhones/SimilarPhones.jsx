@@ -29,12 +29,13 @@ function SimilarPhones({ products }) {
 
     const trackWidth = track.clientWidth;
     const factor = window.innerWidth >= 768 ? 0.25 : 1;
-    const thumbWidth = Math.max((grid.clientWidth / grid.scrollWidth * factor) * trackWidth, 40);
+    const thumbWidth = Math.max((grid.clientWidth / grid.scrollWidth) * factor * trackWidth, 40);
     const maxLeft = trackWidth - thumbWidth;
     const thumbLeft = (grid.scrollLeft / scrollable) * maxLeft;
 
     thumb.style.width = `${thumbWidth}px`;
     thumb.style.transform = `translateX(${thumbLeft}px)`;
+    thumb.setAttribute('aria-valuenow', Math.round((grid.scrollLeft / scrollable) * 100));
   }, []);
 
   useEffect(() => {
@@ -48,6 +49,27 @@ function SimilarPhones({ products }) {
       window.removeEventListener('resize', updateThumb);
     };
   }, [updateThumb]);
+
+  const handleThumbKeyDown = useCallback((e) => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const card = grid.firstElementChild;
+    const step = card ? card.getBoundingClientRect().width : grid.clientWidth * 0.3;
+    const maxScroll = grid.scrollWidth - grid.clientWidth;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      grid.scrollBy({ left: step, behavior: 'smooth' });
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      grid.scrollBy({ left: -step, behavior: 'smooth' });
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      grid.scrollTo({ left: 0, behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      grid.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    }
+  }, []);
 
   const handleThumbMouseDown = useCallback((e) => {
     e.preventDefault();
@@ -88,7 +110,28 @@ function SimilarPhones({ products }) {
   return (
     <section className="similar-phones">
       <h2 className="similar-phones__title">Similar items</h2>
-      <ul className="similar-phones__grid" ref={gridRef} aria-label="Productos similares">
+      <div className="similar-phones__scrollbar-track" ref={trackRef}>
+        <div
+          className="similar-phones__scrollbar-thumb"
+          ref={thumbRef}
+          role="scrollbar"
+          tabIndex={0}
+          aria-controls="similar-phones-list"
+          aria-orientation="horizontal"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={0}
+          aria-label="Desplazar productos similares"
+          onMouseDown={handleThumbMouseDown}
+          onKeyDown={handleThumbKeyDown}
+        />
+      </div>
+      <ul
+        id="similar-phones-list"
+        className="similar-phones__grid"
+        ref={gridRef}
+        aria-label="Productos similares"
+      >
         {visible.map((phone) => (
           <li key={phone.id}>
             <PhoneCard
@@ -101,18 +144,6 @@ function SimilarPhones({ products }) {
           </li>
         ))}
       </ul>
-      <div className="similar-phones__scrollbar-track" ref={trackRef} aria-hidden="true">
-        <div
-          className="similar-phones__scrollbar-thumb"
-          ref={thumbRef}
-          role="scrollbar"
-          tabIndex={0}
-          aria-controls="similar-phones-list"
-          aria-valuenow={0}
-          onMouseDown={handleThumbMouseDown}
-          onKeyDown={() => {}}
-        />
-      </div>
     </section>
   );
 }

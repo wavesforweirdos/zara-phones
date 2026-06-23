@@ -7,10 +7,9 @@ const handleResponse = async (res) => {
 };
 
 export const fetchProducts = (search = '') =>
-  fetch(
-    `${BASE_URL}/products${search ? `?search=${encodeURIComponent(search)}` : ''}`,
-    { headers: HEADERS }
-  ).then(handleResponse);
+  fetch(`${BASE_URL}/products${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
+    headers: HEADERS,
+  }).then(handleResponse);
 
 export const fetchProductById = (id) =>
   fetch(`${BASE_URL}/products/${id}`, { headers: HEADERS }).then(handleResponse);

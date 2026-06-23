@@ -5,7 +5,11 @@ function StorageSelector({ options, selected, onChange }) {
   return (
     <div className="storage-selector">
       <p className="storage-selector__label">STORAGE ¿HOW MUCH SPACE DO YOU NEED?</p>
-      <div className="storage-selector__options" role="radiogroup" aria-label="Capacidad de almacenamiento">
+      <div
+        className="storage-selector__options"
+        role="radiogroup"
+        aria-label="Capacidad de almacenamiento"
+      >
         {options.map((option) => {
           const isSelected = selected?.capacity === option.capacity;
           return (

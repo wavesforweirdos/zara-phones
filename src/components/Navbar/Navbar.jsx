@@ -17,11 +17,7 @@ function Navbar() {
         </Link>
 
         {!isCart && (
-          <Link
-            to="/cart"
-            className="navbar__cart"
-            aria-label={`Carrito, ${cartCount} productos`}
-          >
+          <Link to="/cart" className="navbar__cart" aria-label={`Carrito, ${cartCount} productos`}>
             <img src={bag} alt="" aria-hidden="true" className="navbar__bag-icon" />
             {cartCount >= 0 && <span className="navbar__cart-count">{cartCount}</span>}
           </Link>
