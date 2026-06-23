@@ -20,6 +20,7 @@
     background-color: $color-black-soft;
     color: $color-white;
 
+    &:focus-visible:not(:disabled),
     &:hover:not(:disabled) {
       background-color: $color-black;
     }
@@ -36,6 +37,7 @@
     color: $color-black;
     border: $border-thin solid $color-black;
 
+    &:focus-visible:not(:disabled),
     &:hover:not(:disabled) {
       background-color: $color-black;
       color: $color-white;

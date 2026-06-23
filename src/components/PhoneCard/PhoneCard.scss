@@ -26,10 +26,12 @@
     z-index: 0;
   }
 
+  &:focus-visible:before,
   &:hover::before {
     transform: scaleY(1);
   }
 
+  &:focus-visible,
   &:hover {
     .phone-card__brand,
     .phone-card__name,

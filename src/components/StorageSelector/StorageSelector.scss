@@ -33,6 +33,7 @@
       z-index: 1;
     }
 
+    &:focus-visible:not(&--selected),
     &:hover:not(&--selected) {
       border-color: $color-black;
     }

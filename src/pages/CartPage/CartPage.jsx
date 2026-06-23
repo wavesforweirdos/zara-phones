@@ -63,10 +63,8 @@ function CartPage() {
               <span className="cart-page__total-amount">{cartTotal} EUR</span>
             </div>
           )}
-          <Link to="/" className="cart-page__continue">
-            <Button variant="secondary" className="cart-page__continue-btn">
-              CONTINUE SHOPPING
-            </Button>
+          <Link to="/" className="btn btn--secondary cart-page__continue">
+            CONTINUE SHOPPING
           </Link>
           {hasItems && (
             <Button variant="primary" className="cart-page__pay">

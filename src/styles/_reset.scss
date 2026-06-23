@@ -45,3 +45,8 @@ img {
 input {
   font-family: inherit;
 }
+
+*:focus-visible {
+  outline: 2px solid $color-black;
+  outline-offset: 4px;
+}

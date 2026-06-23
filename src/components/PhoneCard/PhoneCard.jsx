@@ -4,7 +4,7 @@ import './PhoneCard.scss';
 
 function PhoneCard({ id, name, brand, price, imageUrl }) {
   return (
-    <Link to={`/phone/${id}`} className="phone-card" aria-label={`${brand} ${name}, ${price} EUR`}>
+    <Link to={`/phone/${id}`} className="phone-card">
       <div className="phone-card__image-wrapper">
         <img
           src={imageUrl}
