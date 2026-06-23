@@ -15,6 +15,10 @@ function PhoneListPage() {
   const setQuery = (val) => setSearchParams(val ? { search: val } : {}, { replace: true });
 
   const { phones, loading, error } = usePhones(query);
+  useEffect(() => {
+    document.title = 'Catálogo — Zara Phones';
+  }, []);
+
   const [colorFilter, setColorFilter] = useState([]);
   // Map<id, hexCode[]> — built lazily on first color filter, cached in sessionStorage
   const [phoneColorMap, setPhoneColorMap] = useState(null);
@@ -55,7 +59,8 @@ function PhoneListPage() {
   }, [phones, colorFilter, phoneColorMap]);
 
   return (
-    <main className="phone-list-page container container--xl">
+    <main id="main-content" className="phone-list-page container container--xl">
+      <h1 className="sr-only">Catálogo de teléfonos</h1>
       <SearchBar
         value={query}
         onChange={setQuery}

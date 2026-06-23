@@ -7,6 +7,9 @@ import CartPage from './pages/CartPage/CartPage';
 function App() {
   return (
     <BrowserRouter>
+      <a href="#main-content" className="skip-link sr-only">
+        Ir al contenido principal
+      </a>
       <Navbar />
       <Routes>
         <Route path="/" element={<PhoneListPage />} />

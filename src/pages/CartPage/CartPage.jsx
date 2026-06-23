@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import Button from '../../components/Button/Button';
@@ -5,6 +6,13 @@ import './CartPage.scss';
 
 function CartPage() {
   const { cart, dispatch, cartTotal } = useCart();
+
+  useEffect(() => {
+    document.title = 'Carrito — Zara Phones';
+    return () => {
+      document.title = 'Zara Phones';
+    };
+  }, []);
 
   const handleRemove = (item) => {
     dispatch({
@@ -16,15 +24,22 @@ function CartPage() {
   const hasItems = cart.length > 0;
 
   return (
-    <main className="cart-page">
+    <main id="main-content" className="cart-page">
       <div className="cart-page__content container container--xl">
         <h1 className="cart-page__title">CART ({cart.length})</h1>
+
+        {!hasItems && <p className="sr-only">Tu carrito está vacío.</p>}
 
         {hasItems && (
           <ul className="cart-page__list">
             {cart.map((item) => (
               <li key={`${item.id}-${item.color}-${item.storage}`} className="cart-page__item">
-                <Link to={`/phone/${item.id}`} className="cart-page__item-image-link">
+                <Link
+                  to={`/phone/${item.id}`}
+                  className="cart-page__item-image-link"
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
                   <img
                     src={item.imageUrl}
                     alt={`${item.brand} ${item.name}`}

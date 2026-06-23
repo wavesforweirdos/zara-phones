@@ -52,7 +52,7 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
         </p>
 
         {colorOptions.length > 0 && (
-          <div className="search-bar__color-options" role="group" aria-label="Filtrar por color">
+          <div id="search-color-filter" className="search-bar__color-options" role="group" aria-label="Filtrar por color">
             {colorOptions.map((color) => (
               <button
                 key={color.hexCode}
@@ -73,6 +73,7 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
               type="button"
               className={`search-bar__filter-btn${activeCount > 0 ? ' search-bar__filter-btn--active' : ''}`}
               aria-expanded={filterOpen}
+              aria-controls="search-color-filter"
               onClick={() => setFilterOpen((prev) => !prev)}
             >
               {filterOpen ? 'CERRAR' : `FILTRAR${activeCount > 0 ? ` (${activeCount})` : ''}`}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import usePhone from '../../hooks/usePhone';
 import { useCart } from '../../context/CartContext';
@@ -19,9 +19,18 @@ function PhoneDetailPage() {
   const [selectedStorage, setSelectedStorage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
+  useEffect(() => {
+    if (phone) {
+      document.title = `${phone.brand} ${phone.name} — Zara Phones`;
+    }
+    return () => {
+      document.title = 'Zara Phones';
+    };
+  }, [phone]);
+
   if (loading) {
     return (
-      <main className="phone-detail-page">
+      <main id="main-content" className="phone-detail-page">
         <div className="container container--xl">
           <p className="phone-detail-page__status">Cargando...</p>
         </div>
@@ -31,7 +40,7 @@ function PhoneDetailPage() {
 
   if (error) {
     return (
-      <main className="phone-detail-page">
+      <main id="main-content" className="phone-detail-page">
         <div className="container container--xl">
           <p className="phone-detail-page__status phone-detail-page__status--error">
             Error al cargar el teléfono.
@@ -64,7 +73,7 @@ function PhoneDetailPage() {
   };
 
   return (
-    <main className="phone-detail-page">
+    <main id="main-content" className="phone-detail-page">
       <div className="phone-detail-page__content container container--xl">
         <button
           type="button"
