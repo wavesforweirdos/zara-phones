@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import './SpecsTable.scss';
 
 const SPEC_LABELS = {
@@ -43,5 +44,28 @@ function SpecsTable({ brand, name, description, specs }) {
     </section>
   );
 }
+
+SpecsTable.propTypes = {
+  brand: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  specs: PropTypes.shape({
+    screen: PropTypes.string,
+    resolution: PropTypes.string,
+    processor: PropTypes.string,
+    mainCamera: PropTypes.string,
+    selfieCamera: PropTypes.string,
+    battery: PropTypes.string,
+    os: PropTypes.string,
+    screenRefreshRate: PropTypes.string,
+  }),
+};
+
+SpecsTable.defaultProps = {
+  brand: undefined,
+  name: undefined,
+  description: undefined,
+  specs: undefined,
+};
 
 export default SpecsTable;

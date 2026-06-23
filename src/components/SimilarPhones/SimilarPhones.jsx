@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useRef, useEffect, useCallback } from 'react';
 import PhoneCard from '../PhoneCard/PhoneCard';
 import './SimilarPhones.scss';
@@ -104,11 +105,28 @@ function SimilarPhones({ products }) {
         <div
           className="similar-phones__scrollbar-thumb"
           ref={thumbRef}
+          role="scrollbar"
+          tabIndex={0}
+          aria-controls="similar-phones-list"
+          aria-valuenow={0}
           onMouseDown={handleThumbMouseDown}
+          onKeyDown={() => {}}
         />
       </div>
     </section>
   );
 }
+
+SimilarPhones.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      brand: PropTypes.string.isRequired,
+      basePrice: PropTypes.number.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 export default SimilarPhones;

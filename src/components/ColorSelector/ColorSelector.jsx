@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import './ColorSelector.scss';
 
@@ -32,5 +33,20 @@ function ColorSelector({ options, selected, onChange }) {
     </div>
   );
 }
+
+const colorOptionShape = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  hexCode: PropTypes.string.isRequired,
+});
+
+ColorSelector.propTypes = {
+  options: PropTypes.arrayOf(colorOptionShape).isRequired,
+  selected: colorOptionShape,
+  onChange: PropTypes.func.isRequired,
+};
+
+ColorSelector.defaultProps = {
+  selected: null,
+};
 
 export default ColorSelector;

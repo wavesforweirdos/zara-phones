@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import closeIcon from '../../assets/close.svg';
 import './SearchBar.scss';
@@ -92,5 +93,19 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
     </section>
   );
 }
+
+const colorOptionShape = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  hexCode: PropTypes.string.isRequired,
+});
+
+SearchBar.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
+  colorOptions: PropTypes.arrayOf(colorOptionShape),
+  colorFilter: PropTypes.arrayOf(PropTypes.string),
+  onColorFilter: PropTypes.func.isRequired,
+};
 
 export default SearchBar;

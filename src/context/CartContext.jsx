@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createContext, useContext, useReducer, useEffect } from 'react';
 
 const CART_KEY = 'zara_cart';
@@ -64,6 +65,10 @@ export function CartProvider({ children }) {
     </CartContext.Provider>
   );
 }
+
+CartProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export function useCart() {
   const ctx = useContext(CartContext);

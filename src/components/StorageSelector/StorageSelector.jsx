@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import './StorageSelector.scss';
 
 function StorageSelector({ options, selected, onChange }) {
@@ -24,5 +25,20 @@ function StorageSelector({ options, selected, onChange }) {
     </div>
   );
 }
+
+const storageOptionShape = PropTypes.shape({
+  capacity: PropTypes.string.isRequired,
+  price: PropTypes.number,
+});
+
+StorageSelector.propTypes = {
+  options: PropTypes.arrayOf(storageOptionShape).isRequired,
+  selected: storageOptionShape,
+  onChange: PropTypes.func.isRequired,
+};
+
+StorageSelector.defaultProps = {
+  selected: null,
+};
 
 export default StorageSelector;
