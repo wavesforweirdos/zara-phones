@@ -1,8 +1,6 @@
 # zara-phones
 
-Aplicación web de catálogo de teléfonos móviles desarrollada como prueba técnica para Inditex/Zara. Permite explorar el catálogo, buscar por nombre o marca, ver el detalle de cada dispositivo y gestionar un carrito de compras persistente.
-
----
+Aplicación web de catálogo de teléfonos móviles desarrollada como prueba técnica para Inditex/Zara. Permite explorar el catálogo, buscar por nombre o marca, consultar el detalle de cada dispositivo y gestionar un carrito de compras persistente.
 
 ## Requisitos previos
 
@@ -13,97 +11,129 @@ Aplicación web de catálogo de teléfonos móviles desarrollada como prueba té
 
 ```bash
 npm install
-npm start        # modo desarrollo en http://localhost:3000
-npm run build    # build de producción (assets concatenados y minimizados)
-npm test         # tests con cobertura
+npm start        # modo desarrollo — http://localhost:3000 (assets sin minimizar)
+npm run build    # modo producción — assets concatenados y minimizados
+npm test         # suite de tests con informe de cobertura
 npm run lint     # ESLint sobre src/
 npm run format   # Prettier sobre JS, JSX y SCSS
 ```
 
----
+## Vistas implementadas
 
-## Vistas
-
-| Ruta | Descripción |
-|------|-------------|
-| `/` | Cuadrícula con los primeros 20 teléfonos, buscador en tiempo real por nombre/marca vía API e indicador de resultados |
-| `/phone/:id` | Detalle: imagen dinámica por color, selectores de almacenamiento y color, especificaciones técnicas, botón añadir al carrito y productos similares |
-| `/cart` | Listado de ítems con imagen, especificaciones y precio individual, total y botón continuar comprando |
-
----
+| Ruta | Vista | Descripción |
+|------|-------|-------------|
+| `/` | Listado | Cuadrícula de 20 teléfonos, buscador en tiempo real con debounce, filtro por color, contador de resultados |
+| `/phone/:id` | Detalle | Imagen dinámica por color, selectores de almacenamiento y color, precio en tiempo real, botón "Añadir" deshabilitado hasta selección completa, especificaciones técnicas, productos similares con carrusel |
+| `/cart` | Carrito | Lista de productos con imagen/specs/precio, botón "Eliminar", total de la compra, "Continue Shopping" |
 
 ## Arquitectura y estructura
 
 ```
 src/
-├── components/   # PhoneCard, Navbar, SearchBar, ColorSelector, StorageSelector,
-│                 # SpecsTable, SimilarPhones, Button
-├── constants/    # filters.js — colores disponibles extraídos de la API
-├── context/      # CartContext.jsx — useReducer + persistencia en localStorage
-├── hooks/        # usePhones, usePhone (caché sessionStorage), useDebounce
-├── pages/        # PhoneListPage, PhoneDetailPage, CartPage
-├── services/     # api.js — wrapper centralizado con header x-api-key
-└── styles/       # _variables.scss, _reset.scss, _container.scss, mixins/
+├── components/
+│   ├── Button/          # Botón reutilizable (variantes primary / secondary)
+│   ├── ColorSelector/   # Swatches de color con estado seleccionado
+│   ├── Navbar/          # Header sticky con logo y badge del carrito
+│   ├── PhoneCard/       # Tarjeta (imagen, marca, nombre, precio)
+│   ├── SearchBar/       # Input con debounce, contador de resultados y filtro de color
+│   ├── SimilarPhones/   # Carrusel horizontal con scrollbar personalizado arrastrable
+│   ├── SpecsTable/      # Tabla de especificaciones técnicas
+│   └── StorageSelector/ # Chips de almacenamiento (radio group accesible)
+├── constants/
+│   └── filters.js       # Colores disponibles para el filtro de la lista
+├── context/
+│   └── CartContext.jsx  # useReducer — ADD_ITEM / REMOVE_ITEM / LOAD_CART
+├── hooks/
+│   ├── useDebounce.js   # Debounce genérico vía useRef (sin dependencias externas)
+│   ├── usePhone.js      # Fetch del detalle con caché en sessionStorage
+│   └── usePhones.js     # Fetch de la lista con búsqueda y caché en sessionStorage
+├── pages/
+│   ├── CartPage/
+│   ├── PhoneDetailPage/
+│   └── PhoneListPage/
+├── services/
+│   └── api.js           # fetchProducts / fetchProductById — único punto de acceso a la API REST
+└── styles/
+    ├── _variables.scss  # Design system: colores, tipografía y espaciados como vars SCSS y CSS custom properties
+    ├── _reset.scss
+    ├── _container.scss
+    ├── main.scss
+    └── mixins/          # _breakpoints.scss · _typography.scss
 ```
-
----
 
 ## Decisiones técnicas
 
-**Caché con sessionStorage** — Las respuestas de la API se cachean bajo la clave `phones_cache_<query>` (lista) y `phone_cache_<id>` (detalle). Evita llamadas repetidas durante la misma sesión sin necesidad de librerías externas.
+| Decisión | Motivo |
+|----------|--------|
+| **Caché sessionStorage** | Evita llamadas repetidas a la misma query durante la sesión; se invalida al cerrar la pestaña |
+| **CartContext + useReducer** | Estado predecible con acciones tipadas; aislado y fácil de testear |
+| **localStorage para el carrito** | Persistencia entre sesiones bajo la clave `zara_cart`; se hidrata en el primer render |
+| **URL search params** | La búsqueda vive en `?search=query` — el estado es compartible y navegable con el historial del browser |
+| **CSS custom properties + SCSS vars** | Todas las variables del design system en un único fichero (`_variables.scss`); las propiedades CSS quedan disponibles para sobreescritura en runtime |
+| **Debounce 300 ms con useRef** | Sin dependencias externas; el timer se limpia correctamente al desmontar |
+| **Webpack 5 dev/prod** | Code splitting, minificación y hashes de contenido solo en producción; source maps en desarrollo |
+| **Filtro por color en cliente** | El endpoint `GET /products` no expone metadatos de color; los colores se resuelven bajo demanda con `Promise.all` sobre `GET /products/:id` y se cachean en sessionStorage. En producción esta lógica debería residir en el backend |
 
-**CartContext con useReducer** — Estado predecible con acciones tipadas (`ADD_ITEM`, `REMOVE_ITEM`, `LOAD_CART`). El carrito se hidrata desde `localStorage` (`zara_cart`) al montar la aplicación y se sincroniza en cada cambio.
+## API
 
-**Debounce de 300 ms en la búsqueda** — Implementado con `useRef` + `clearTimeout` para evitar llamadas innecesarias a la API mientras el usuario escribe.
+Base URL: `https://prueba-tecnica-api-tienda-moviles.onrender.com`
 
-**Filtro por color en cliente** — El endpoint `GET /products` no devuelve metadatos de color. Los colores disponibles están definidos estáticamente en `src/constants/filters.js`, construidos consultando `GET /products/:id` sobre los 24 productos en paralelo (`Promise.all`) y deduplicando los valores de `colorOptions[].name`. En producción, esta lógica debería residir en el backend.
+El header `x-api-key` está definido exclusivamente en `src/services/api.js`. Ningún otro fichero lo referencia directamente.
 
-**Webpack 5** — Configuración diferenciada dev/prod. En producción: minificación CSS y JS, code splitting y assets con hash de contenido.
-
-**Design system SCSS** — Variables CSS centralizadas en `_variables.scss` (colores, espaciados, tipografía) y mixins de breakpoints (`_breakpoints.scss`) para garantizar consistencia visual entre componentes.
-
----
+| Endpoint | Uso |
+|----------|-----|
+| `GET /products?search=query` | Lista de teléfonos (búsqueda delegada a la API) |
+| `GET /products/:id` | Detalle de un teléfono |
 
 ## Testing
 
-9 suites · **26 tests** · Jest + Testing Library
+**54 tests** en 12 suites — Jest + Testing Library
 
-| Módulo | Cobertura (stmts) |
-|--------|-------------------|
-| CartPage | 100 % |
-| PhoneCard | 100 % |
-| StorageSelector | 100 % |
-| CartContext | 94 % |
-| Navbar | 100 % |
-| usePhones | 96 % |
-| usePhone | 91 % |
-| ColorSelector | 88 % |
-| SearchBar | 38 % |
+| Fichero | Stmts |
+|---------|-------|
+| `PhoneDetailPage.jsx` | 100 % |
+| `CartPage.jsx` | 100 % |
+| `PhoneCard.jsx` | 100 % |
+| `StorageSelector.jsx` | 100 % |
+| `SpecsTable.jsx` | 100 % |
+| `Navbar.jsx` | 100 % |
+| `CartContext.jsx` | 94 % |
+| `usePhones.js` | 96 % |
+| `usePhone.js` | 91 % |
+| `PhoneListPage.jsx` | 97 % |
 
-Los tests de hooks mockan `global.fetch` con `jest.spyOn` y verifican que una segunda llamada con la misma query sirve desde `sessionStorage` sin invocar `fetch`.
-
----
-
-## Stack tecnológico
-
-| Categoría | Elección |
-|-----------|----------|
-| UI | React 19 |
-| Routing | React Router DOM v7 |
-| Estado global | Context API + useReducer |
-| Estilos | SASS + CSS custom properties |
-| Bundler | Webpack 5 |
-| Testing | Jest + Testing Library |
-| Calidad | ESLint + Prettier |
-
----
+Estrategias aplicadas: `jest.spyOn(global, 'fetch')` para control de red en hooks, `jest.useFakeTimers()` para el debounce, sessionStorage pre-cargado para verificar hits de caché, y `MemoryRouter` + `CartProvider` como wrappers en componentes con routing o contexto.
 
 ## Accesibilidad
 
-- `<nav>` con `aria-label` en el Navbar
-- `<main>` como landmark principal en cada página
-- Todos los `<img>` con `alt` descriptivo
+- `<nav>` con `aria-label` en el Navbar; `<main>` como landmark en cada página
+- Todos los `<img>` con `alt` descriptivo o `aria-hidden="true"` cuando son decorativos
 - Swatches de color con `aria-label="Color: {nombre}"` y `aria-pressed`
 - Chips de almacenamiento con `role="radio"` dentro de `role="radiogroup"`
-- Botón añadir con estado `disabled` y cursor `not-allowed` cuando faltan selecciones
-- Contraste WCAG AA: texto negro sobre fondo blanco
+- Botón "Añadir" con `disabled` y `cursor: not-allowed` hasta selección completa
+- Resultados de búsqueda con `aria-live="polite"` para lectores de pantalla
+- Contraste WCAG AA: texto negro (#000000) sobre fondo blanco (#ffffff)
+
+## Requisitos del enunciado
+
+| Requisito | Estado |
+|-----------|--------|
+| Cuadrícula con 20 teléfonos | ✅ |
+| Búsqueda en tiempo real vía API | ✅ |
+| Indicador de número de resultados | ✅ |
+| Navbar con badge del carrito | ✅ |
+| Carrito persistente (localStorage) | ✅ |
+| Vista detalle con selectores y precio dinámico | ✅ |
+| Botón "Añadir" deshabilitado hasta selección completa | ✅ |
+| Sección "Productos similares" | ✅ |
+| Vista carrito con eliminar y total | ✅ |
+| Diseño responsive (mobile / tablet / desktop) | ✅ |
+| Accesibilidad | ✅ |
+| Linter (ESLint) y formatter (Prettier) | ✅ |
+| Tests | ✅ 54 tests |
+| Modo desarrollo y producción | ✅ |
+| Variables CSS (opcional) | ✅ |
+
+## Stack tecnológico
+
+React 19 · React Router v7 · Context API + useReducer · Webpack 5 · SCSS · CSS Custom Properties · Jest · Testing Library · ESLint · Prettier
