@@ -36,7 +36,7 @@ describe('CartPage', () => {
   it('with empty cart shows CART (0) and the CONTINUE SHOPPING button', () => {
     renderWithCart([]);
     expect(screen.getByText('CART (0)')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /continue shopping/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /continue shopping/i })).toBeInTheDocument();
   });
 
   it('with items shows the phone name and the correct total', () => {
