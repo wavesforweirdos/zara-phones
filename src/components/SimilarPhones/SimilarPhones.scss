@@ -2,6 +2,8 @@
 @use '../../styles/mixins/index' as *;
 
 .similar-phones {
+  display: flex;
+  flex-direction: column;
   padding-left: $space-xl;
   padding-top: $space-7xl;
   padding-bottom: $space-7xl;
@@ -19,9 +21,11 @@
     text-transform: uppercase;
     color: $color-black;
     padding-bottom: $space-4xl;
+    order: 1;
   }
 
   &__grid {
+    order: 2;
     display: flex;
     overflow-x: auto;
     list-style: none;
@@ -57,6 +61,7 @@
   }
 
   &__scrollbar-track {
+    order: 3;
     height: 1px;
     background: $color-gray-light;
     position: relative;
@@ -79,6 +84,12 @@
     height: 100%;
     background: $color-black;
     cursor: grab;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -6px 0;
+    }
 
     &:active {
       cursor: grabbing;
