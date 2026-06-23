@@ -1,5 +1,4 @@
 module.exports = (api) => {
-  api.cache(true);
   const isTest = api.env('test');
   const isDevelopment = api.env('development');
 
