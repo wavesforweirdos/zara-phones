@@ -29,7 +29,7 @@ function SimilarPhones({ products }) {
 
     const trackWidth = track.clientWidth;
     const factor = window.innerWidth >= 768 ? 0.25 : 1;
-    const thumbWidth = Math.max((grid.clientWidth / grid.scrollWidth * factor) * trackWidth, 40);
+    const thumbWidth = Math.max((grid.clientWidth / grid.scrollWidth) * factor * trackWidth, 40);
     const maxLeft = trackWidth - thumbWidth;
     const thumbLeft = (grid.scrollLeft / scrollable) * maxLeft;
 
@@ -126,7 +126,12 @@ function SimilarPhones({ products }) {
           onKeyDown={handleThumbKeyDown}
         />
       </div>
-      <ul id="similar-phones-list" className="similar-phones__grid" ref={gridRef} aria-label="Productos similares">
+      <ul
+        id="similar-phones-list"
+        className="similar-phones__grid"
+        ref={gridRef}
+        aria-label="Productos similares"
+      >
         {visible.map((phone) => (
           <li key={phone.id}>
             <PhoneCard

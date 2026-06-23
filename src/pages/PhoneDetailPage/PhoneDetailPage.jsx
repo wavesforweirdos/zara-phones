@@ -80,7 +80,12 @@ function PhoneDetailPage() {
           className="phone-detail-page__back"
           onClick={() => navigate(window.history.length > 1 ? -1 : '/')}
         >
-          <img src={chevronIcon} alt="" aria-hidden="true" className="phone-detail-page__back-icon" />
+          <img
+            src={chevronIcon}
+            alt=""
+            aria-hidden="true"
+            className="phone-detail-page__back-icon"
+          />
           BACK
         </button>
 
@@ -113,11 +118,7 @@ function PhoneDetailPage() {
               />
             </div>
 
-            <Button
-              className="phone-detail-page__add-btn"
-              disabled={!canAdd}
-              onClick={handleAdd}
-            >
+            <Button className="phone-detail-page__add-btn" disabled={!canAdd} onClick={handleAdd}>
               AÑADIR
             </Button>
           </div>

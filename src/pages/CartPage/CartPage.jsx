@@ -49,7 +49,9 @@ function CartPage() {
                 </Link>
                 <div className="cart-page__item-body">
                   <div className="cart-page__item-details">
-                    <Link to={`/phone/${item.id}`} className="cart-page__item-name">{item.name}</Link>
+                    <Link to={`/phone/${item.id}`} className="cart-page__item-name">
+                      {item.name}
+                    </Link>
                     <p className="cart-page__item-specs">
                       {item.storage} | {item.color}
                     </p>

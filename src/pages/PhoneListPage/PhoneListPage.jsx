@@ -34,10 +34,7 @@ function PhoneListPage() {
 
     Promise.all(phones.map((p) => fetchProductById(p.id))).then((details) => {
       const map = new Map(
-        details.map((d) => [
-          d.id,
-          (d.colorOptions ?? []).map((c) => c.hexCode.toUpperCase()),
-        ])
+        details.map((d) => [d.id, (d.colorOptions ?? []).map((c) => c.hexCode.toUpperCase())])
       );
       sessionStorage.setItem(COLOR_MAP_CACHE_KEY, JSON.stringify([...map]));
       setPhoneColorMap(map);

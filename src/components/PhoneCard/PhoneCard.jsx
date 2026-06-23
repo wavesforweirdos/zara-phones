@@ -6,12 +6,7 @@ function PhoneCard({ id, name, brand, price, imageUrl }) {
   return (
     <Link to={`/phone/${id}`} className="phone-card">
       <div className="phone-card__image-wrapper">
-        <img
-          src={imageUrl}
-          alt={`${brand} ${name}`}
-          className="phone-card__image"
-          loading="lazy"
-        />
+        <img src={imageUrl} alt={`${brand} ${name}`} className="phone-card__image" loading="lazy" />
       </div>
       <div className="phone-card__info">
         <div className="phone-card__text">

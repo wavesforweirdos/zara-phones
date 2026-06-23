@@ -52,7 +52,12 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
         </p>
 
         {colorOptions.length > 0 && (
-          <div id="search-color-filter" className="search-bar__color-options" role="group" aria-label="Filtrar por color">
+          <div
+            id="search-color-filter"
+            className="search-bar__color-options"
+            role="group"
+            aria-label="Filtrar por color"
+          >
             {colorOptions.map((color) => (
               <button
                 key={color.hexCode}
