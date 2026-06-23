@@ -29,6 +29,7 @@ function CartPage() {
                     src={item.imageUrl}
                     alt={`${item.brand} ${item.name}`}
                     className="cart-page__item-image"
+                    loading="lazy"
                   />
                 </Link>
                 <div className="cart-page__item-body">
