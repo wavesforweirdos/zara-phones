@@ -1,0 +1,36 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins/index' as *;
+
+.specs-table {
+  &__title {
+    @include text-lg;
+    color: $color-black;
+    padding-bottom: $space-4xl;
+    border-bottom: $border-thin solid $color-black;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    gap: $space-lg;
+    padding: $space-lg 0;
+    border-bottom: $border-thin solid $color-black;
+  }
+
+  &__label {
+    @include text-sm;
+    color: $color-black;
+    flex: 1;
+  }
+
+  &__value {
+    @include text-sm;
+    color: $color-black;
+    text-transform: none;
+    flex: 2;
+  }
+}

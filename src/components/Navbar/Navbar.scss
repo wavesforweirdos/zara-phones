@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins/index' as *;
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: $height-navbar;
+  background: $color-white;
+
+  @include desktop {
+    &--bordered {
+      border-bottom: 1px solid $color-black;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo-img {
+    height: 28px;
+    width: auto;
+  }
+
+  &__cart {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    color: $color-black;
+  }
+
+  &__bag-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  &__cart-count {
+    @include text-md;
+    text-transform: uppercase;
+    color: $color-black;
+  }
+}

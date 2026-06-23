@@ -1,0 +1,54 @@
+@use '../../styles/variables' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: $space-5xl;
+  padding: $space-sm $space-lg;
+  border: none;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: $font-size-sm;
+  font-weight: 300;
+  line-height: $line-height-btn;
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &--primary {
+    background-color: $color-black-soft;
+    color: $color-white;
+
+    &:focus-visible:not(:disabled),
+    &:hover:not(:disabled) {
+      background-color: $color-black;
+    }
+
+    &:disabled {
+      background-color: $color-gray-lighter;
+      color: $color-gray-medium;
+      cursor: not-allowed;
+    }
+  }
+
+  &--secondary {
+    background-color: transparent;
+    color: $color-black;
+    border: $border-thin solid $color-black;
+
+    &:focus-visible:not(:disabled),
+    &:hover:not(:disabled) {
+      background-color: $color-black;
+      color: $color-white;
+    }
+
+    &:disabled {
+      border-color: $color-gray-lighter;
+      color: $color-gray-medium;
+      cursor: not-allowed;
+    }
+  }
+}

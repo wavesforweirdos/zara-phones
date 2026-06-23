@@ -1,0 +1,154 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins/index' as *;
+
+.search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md-plus;
+  padding-top: $height-btn-mobile;
+  padding-bottom: $height-btn-mobile;
+  background: $color-white;
+
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    width: 100%;
+    border: none;
+    border-bottom: $border-thin solid $color-black;
+    @include text-md;
+    vertical-align: middle;
+    color: $color-black;
+    background: transparent;
+    // outline: none;
+    padding-bottom: $space-sm;
+    padding-right: $space-2xl;
+
+    &::placeholder {
+      color: $color-gray-medium;
+    }
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
+  }
+
+  &__clear {
+    position: absolute;
+    right: 0;
+    bottom: $space-sm;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 20px;
+      height: 19px;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 24px;
+  }
+
+  // ── Count ─────────────────────────────────────────────
+  &__count {
+    @include text-sm;
+    color: $color-black;
+  }
+
+  // Mobile: hide count when filter panel is open
+  &--filter-open &__count {
+    display: none;
+
+    @include tablet {
+      display: block;
+    }
+  }
+
+  // ── Color swatches ────────────────────────────────────
+  &__color-options {
+    display: none;
+    gap: $space-lg;
+    margin-left: auto;
+    margin-right: $space-md + 4px;
+
+    @include tablet {
+      display: none;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Mobile: show swatches when filter panel is open
+  &--filter-open &__color-options {
+    display: flex;
+    @include tablet {
+      display: none;
+    }
+  }
+
+  // ── Filter toggle (mobile only) ───────────────────────
+  &__filter-controls {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    flex-shrink: 0;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &__filter-clear {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &__filter-btn {
+    @include text-sm;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $color-black;
+    padding: 0;
+
+    &--active {
+      font-weight: 400;
+    }
+  }
+
+  // ── Swatches ──────────────────────────────────────────
+  &__color-swatch {
+    width: 20px;
+    height: 20px;
+    border: 1px solid transparent;
+    outline: 1px solid $color-gray-light;
+    outline-offset: 2px;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+
+    &--selected {
+      outline-color: $color-black;
+    }
+  }
+}

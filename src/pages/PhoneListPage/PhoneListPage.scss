@@ -1,0 +1,49 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins/index' as *;
+
+.phone-list-page {
+  min-height: calc(100vh - #{$height-navbar});
+  padding-bottom: $space-7xl;
+
+  &__status {
+    padding-top: $space-4xl;
+    padding-bottom: $space-4xl;
+    @include text-sm;
+    color: $color-black;
+
+    &--error {
+      color: $color-error;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    list-style: none;
+    border-left: $border-thin solid $color-black;
+
+    &:has(li) {
+      border-top: $border-thin solid $color-black;
+    }
+
+    > li {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-right: $border-thin solid $color-black;
+      border-bottom: $border-thin solid $color-black;
+      display: flex;
+    }
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include desktop {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include widescreen {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}

@@ -1,0 +1,91 @@
+// ---- SCSS variables ----
+// Modificar aquí para customizar el proyecto
+
+// Colores
+$color-black: #000000;
+$color-black-soft: #1b1a18;
+$color-white: #ffffff;
+$color-gray-warm: #79736d; // brand subtitle in phone cards
+$color-gray-medium: #aaaaaa;
+$color-gray-light: #cccccc;
+$color-gray-lighter: #d9d9d9;
+$color-error: #df0000;
+$color-badge: #ec1d24;
+
+// Tipografía — tamaños de fuente
+$font-size-sm: 12px;
+$font-size-label: 14px; // selector labels, cart total
+
+// Tipografía — line-heights específicos del Figma
+$line-height-btn: 16px;
+$line-height-total: 17px; // cart total label
+$line-height-price: 24px; // phone price in detail
+$line-height-name: 29px; // phone name in detail
+
+// Espaciados
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 11px;
+$space-md-plus: 12px; // SearchBar gap, CartPage footer column-gap
+$space-lg: 16px;
+$space-xl: 20px;
+$space-2xl: 24px;
+$space-3xl: 32px;
+$space-4xl: 40px;
+$space-5xl: 56px;
+$space-6xl: 64px;
+$space-7xl: 100px;
+$space-widescreen-gap: 170px; // image–info gap in detail page at widescreen
+
+// Alturas fijas
+$height-navbar: 80px;
+$height-btn-mobile: 48px; // button height on mobile
+
+// Bordes
+$border-thin: 0.5px; // thin borders on cards and separators
+
+// Breakpoints (solo para @media — no se exponen como custom properties)
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-widescreen: 1440px;
+
+// ---- CSS custom properties generadas desde las SCSS vars ----
+
+:root {
+  --color-black: #{$color-black};
+  --color-black-soft: #{$color-black-soft};
+  --color-white: #{$color-white};
+  --color-gray-warm: #{$color-gray-warm};
+  --color-gray-medium: #{$color-gray-medium};
+  --color-gray-light: #{$color-gray-light};
+  --color-gray-lighter: #{$color-gray-lighter};
+  --color-error: #{$color-error};
+  --color-badge: #{$color-badge};
+
+  --font-size-sm: #{$font-size-sm};
+  --font-size-label: #{$font-size-label};
+
+  --line-height-btn: #{$line-height-btn};
+  --line-height-total: #{$line-height-total};
+  --line-height-price: #{$line-height-price};
+  --line-height-name: #{$line-height-name};
+
+  --space-xs: #{$space-xs};
+  --space-sm: #{$space-sm};
+  --space-md: #{$space-md};
+  --space-md-plus: #{$space-md-plus};
+  --space-lg: #{$space-lg};
+  --space-xl: #{$space-xl};
+  --space-2xl: #{$space-2xl};
+  --space-3xl: #{$space-3xl};
+  --space-4xl: #{$space-4xl};
+  --space-5xl: #{$space-5xl};
+  --space-6xl: #{$space-6xl};
+  --space-7xl: #{$space-7xl};
+  --space-widescreen-gap: #{$space-widescreen-gap};
+
+  --height-navbar: #{$height-navbar};
+  --height-btn-mobile: #{$height-btn-mobile};
+
+  --border-thin: #{$border-thin};
+}
