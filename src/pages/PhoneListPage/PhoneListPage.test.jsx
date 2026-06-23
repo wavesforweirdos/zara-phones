@@ -93,4 +93,32 @@ describe('PhoneListPage', () => {
       expect(screen.getByText('1 RESULTS')).toBeInTheDocument();
     });
   });
+
+  it('usa el color map de sessionStorage sin llamar a fetch de nuevo', async () => {
+    const user = userEvent.setup();
+    fetchProductById.mockClear();
+
+    // Pre-load the color map so the useEffect reads cache instead of fetching
+    const cachedMap = [
+      ['1', ['#000000']], // phone 1 → Black
+      ['2', ['#FFFFFF']], // phone 2 → White
+    ];
+    sessionStorage.setItem('phone_color_map', JSON.stringify(cachedMap));
+
+    usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
+
+    render(
+      <MemoryRouter>
+        <PhoneListPage />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Color: Black' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('1 RESULTS')).toBeInTheDocument();
+    });
+
+    expect(fetchProductById).not.toHaveBeenCalled();
+  });
 });
