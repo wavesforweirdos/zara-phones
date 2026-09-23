@@ -11,6 +11,7 @@ Aplicación web de catálogo de teléfonos móviles desarrollada como prueba té
 
 ```bash
 npm install
+cp .env.example .env   # rellenar API_KEY con la clave facilitada en el enunciado
 npm start        # modo desarrollo — http://localhost:3000 (assets sin minimizar)
 npm run build    # modo producción — assets concatenados y minimizados
 npm test         # suite de tests con informe de cobertura
@@ -78,7 +79,21 @@ src/
 
 Base URL: `https://prueba-tecnica-api-tienda-moviles.onrender.com`
 
-El header `x-api-key` está definido exclusivamente en `src/services/api.js`. Ningún otro fichero lo referencia directamente.
+La URL base y la API key **no están en el código**: se leen de variables de entorno en tiempo de build.
+
+| Variable | Descripción |
+|----------|-------------|
+| `API_BASE_URL` | URL base de la API |
+| `API_KEY` | Valor del header `x-api-key` |
+
+- En local se cargan desde `.env` (ignorado por git; plantilla en `.env.example`) mediante `dotenv` y se inyectan con `DefinePlugin` de Webpack.
+- En Vercel se configuran en *Project Settings → Environment Variables*.
+- El build falla con un mensaje explícito si falta alguna.
+- Los tests usan valores ficticios definidos en `jest.setup.env.js`.
+
+> **Limitación conocida:** en una SPA sin backend cualquier valor inyectado en build acaba en el bundle público. Mover la key a `.env` evita exponerla en el repositorio, pero protegerla de verdad requeriría un proxy en servidor (p. ej. una función serverless) que añada el header. La key la facilita el enunciado y es compartida, por lo que su rotación depende del propietario de la API; la versión anterior del repositorio la contenía en el historial.
+
+El header `x-api-key` se añade exclusivamente en `src/services/api.js`.
 
 | Endpoint | Uso |
 |----------|-----|
