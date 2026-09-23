@@ -6,8 +6,8 @@ Aplicación web de catálogo de teléfonos móviles desarrollada como prueba té
 
 ## Requisitos previos
 
-- Node.js >= 18
-- npm >= 9
+- Node.js `^22.18.0` o `>=24.11.0` (lo exige Babel 8; declarado en `engines` de `package.json`)
+- npm >= 10
 
 ## Instalación y ejecución
 
@@ -174,6 +174,15 @@ La API se simula con `page.route` (`e2e/fixtures/api.js`) y la configuración us
 | Modo desarrollo y producción | ✅ |
 | Variables CSS (opcional) | ✅ |
 | Despliegue (opcional) | ✅ [Vercel](https://zara-phones.vercel.app/) |
+
+## Integración continua
+
+GitHub Actions (`.github/workflows/ci.yml`) se ejecuta en cada push y pull request con dos jobs en paralelo:
+
+- **quality**: `lint`, `typecheck`, `format:check`, tests unitarios con cobertura (se sube como artefacto) y build de producción
+- **e2e**: tests de Playwright en Chromium (trazas como artefacto si fallan)
+
+CI usa una URL y una key ficticias: la key real nunca sale de `.env` y de Vercel.
 
 ## Despliegue
 
