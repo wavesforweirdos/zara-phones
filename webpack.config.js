@@ -19,7 +19,13 @@ module.exports = (env, argv) => {
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
-          use: 'babel-loader',
+          use: {
+            loader: 'babel-loader',
+            options: {
+              envName: isProd ? 'production' : 'development',
+              cacheDirectory: !isProd,
+            },
+          },
           type: 'javascript/auto',
         },
         {
