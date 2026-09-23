@@ -87,19 +87,17 @@ Endpoints:
 
 ### Autenticación
 
-Todas las peticiones deben incluir el header:
-
-```
-x-api-key: 87909682e6cd74208f41a6ef39fe4191
-```
+Todas las peticiones deben incluir el header `x-api-key`. Su valor **nunca** se escribe en el
+código ni en la documentación: vive en `.env` (variable `API_KEY`, ignorado por git; plantilla en
+`.env.example`) y en las variables de entorno del proyecto en Vercel.
 
 ### Wrapper centralizado
 
-Crear `src/services/api.js`:
+`src/services/api.ts` (valores inyectados en build por `DefinePlugin` de Webpack):
 
-```js
-const BASE_URL = 'https://prueba-tecnica-api-tienda-moviles.onrender.com';
-const HEADERS = { 'x-api-key': '87909682e6cd74208f41a6ef39fe4191' };
+```ts
+const BASE_URL = process.env.API_BASE_URL;
+const HEADERS = { 'x-api-key': process.env.API_KEY };
 
 export const fetchPhones = (search = '') =>
   fetch(`${BASE_URL}/products${search ? `?search=${search}` : ''}`, { headers: HEADERS })
