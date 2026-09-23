@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { fetchProducts } from '../services/api';
+import type { PhoneSummary } from '../types/phone';
 import useDebounce from './useDebounce';
 
-function usePhones(query = '') {
-  const [phones, setPhones] = useState([]);
+interface UsePhonesResult {
+  phones: PhoneSummary[];
+  loading: boolean;
+  error: string | null;
+}
+
+function usePhones(query = ''): UsePhonesResult {
+  const [phones, setPhones] = useState<PhoneSummary[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const debouncedQuery = useDebounce(query, 300);
 
@@ -14,7 +21,7 @@ function usePhones(query = '') {
     // so a slow stale response can never overwrite a newer one
     const controller = new AbortController();
 
-    const dedupe = (arr) =>
+    const dedupe = (arr: unknown): PhoneSummary[] =>
       Array.isArray(arr) ? arr.filter((p, i, a) => a.findIndex((x) => x.id === p.id) === i) : [];
 
     const load = async () => {
@@ -35,8 +42,8 @@ function usePhones(query = '') {
         setPhones(unique);
         sessionStorage.setItem(cacheKey, JSON.stringify(unique));
       } catch (err) {
-        if (err.name === 'AbortError') return;
-        setError(err.message);
+        if (controller.signal.aborted) return;
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

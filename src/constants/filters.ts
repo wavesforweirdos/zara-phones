@@ -8,14 +8,16 @@
 // el primero en orden alfabético. Resultado: 29 colores únicos de los 43 originales.
 // Top 4 por frecuencia en el catálogo (conteo vía Promise.all sobre GET /products/:id):
 // Black ×14, Azul ×7, Titanium Yellow ×4, Matte Grey ×3
-export const TOP_COLORS = [
+import type { Swatch } from '../types/phone';
+
+export const TOP_COLORS: Swatch[] = [
   { name: 'Black', hexCode: '#000000' },
   { name: 'Azul', hexCode: '#0000FF' },
   { name: 'Titanium Yellow', hexCode: '#FFFF00' },
   { name: 'Matte Grey', hexCode: '#808080' },
 ];
 
-export const AVAILABLE_COLORS = [
+export const AVAILABLE_COLORS: Swatch[] = [
   { name: '(PRODUCT)RED', hexCode: '#BA0C2F' },
   { name: 'Amber Orange', hexCode: '#FF7F00' },
   { name: 'Azul', hexCode: '#0000FF' }, // Azul brillante eliminado (mismo hex)
