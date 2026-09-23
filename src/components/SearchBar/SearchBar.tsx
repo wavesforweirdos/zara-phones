@@ -1,19 +1,36 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import type { MouseEvent } from 'react';
 import closeIcon from '../../assets/close.svg';
+import type { Swatch } from '../../types/phone';
 import './SearchBar.scss';
 
-function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = [], onColorFilter }) {
+interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+  count: number;
+  colorOptions?: Swatch[];
+  colorFilter?: string[];
+  onColorFilter: (colorNames: string[]) => void;
+}
+
+function SearchBar({
+  value,
+  onChange,
+  count,
+  colorOptions = [],
+  colorFilter = [],
+  onColorFilter,
+}: SearchBarProps) {
   const [filterOpen, setFilterOpen] = useState(false);
 
-  const handleSwatchClick = (name) => {
+  const handleSwatchClick = (name: string) => {
     const next = colorFilter.includes(name)
       ? colorFilter.filter((n) => n !== name)
       : [...colorFilter, name];
     onColorFilter(next);
   };
 
-  const handleClearColors = (e) => {
+  const handleClearColors = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onColorFilter([]);
   };
@@ -99,19 +116,5 @@ function SearchBar({ value, onChange, count, colorOptions = [], colorFilter = []
     </section>
   );
 }
-
-const colorOptionShape = PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  hexCode: PropTypes.string.isRequired,
-});
-
-SearchBar.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired,
-  colorOptions: PropTypes.arrayOf(colorOptionShape),
-  colorFilter: PropTypes.arrayOf(PropTypes.string),
-  onColorFilter: PropTypes.func.isRequired,
-};
 
 export default SearchBar;

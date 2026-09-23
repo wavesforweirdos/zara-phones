@@ -1,8 +1,15 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './PhoneCard.scss';
 
-function PhoneCard({ id, name, brand, price, imageUrl }) {
+interface PhoneCardProps {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  imageUrl: string;
+}
+
+function PhoneCard({ id, name, brand, price, imageUrl }: PhoneCardProps) {
   return (
     <Link to={`/phone/${id}`} className="phone-card">
       <div className="phone-card__image-wrapper">
@@ -18,13 +25,5 @@ function PhoneCard({ id, name, brand, price, imageUrl }) {
     </Link>
   );
 }
-
-PhoneCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  brand: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  imageUrl: PropTypes.string.isRequired,
-};
 
 export default PhoneCard;
