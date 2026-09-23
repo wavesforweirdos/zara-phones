@@ -34,20 +34,20 @@ const cartReducer = (state, action) => {
 
 const CartContext = createContext(null);
 
-export function CartProvider({ children }) {
-  const [cart, dispatch] = useReducer(cartReducer, []);
+// Read synchronously as the reducer's initial state: hydrating in an effect let the sync
+// effect below overwrite the stored cart with [] before it was loaded (seen under StrictMode)
+const loadStoredCart = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(CART_KEY));
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    // corrupted storage — start empty
+    return [];
+  }
+};
 
-  // Hydrate from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CART_KEY);
-      if (stored) {
-        dispatch({ type: 'LOAD_CART', payload: JSON.parse(stored) });
-      }
-    } catch {
-      // corrupted storage — start empty
-    }
-  }, []);
+export function CartProvider({ children }) {
+  const [cart, dispatch] = useReducer(cartReducer, undefined, loadStoredCart);
 
   // Sync to localStorage on every change
   useEffect(() => {
