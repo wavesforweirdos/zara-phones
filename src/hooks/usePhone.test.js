@@ -46,4 +46,37 @@ describe('usePhone', () => {
     await waitFor(() => expect(result2.current.phone).not.toBeNull());
     expect(fetchSpy).toHaveBeenCalledTimes(1); // no additional call
   });
+
+  it('aborts the pending request on unmount', () => {
+    fetchSpy.mockImplementationOnce(() => new Promise(() => {}));
+
+    const { unmount } = renderHook(() => usePhone('SMG-S24U'));
+    const { signal } = fetchSpy.mock.calls[0][1];
+    expect(signal.aborted).toBe(false);
+
+    unmount();
+
+    expect(signal.aborted).toBe(true);
+  });
+
+  it('aborts the previous request when the id changes', async () => {
+    fetchSpy.mockImplementationOnce(
+      (_url, { signal }) =>
+        new Promise((_resolve, reject) => {
+          signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+        })
+    );
+
+    const { result, rerender } = renderHook(({ id }) => usePhone(id), {
+      initialProps: { id: 'APL-IP15' },
+    });
+    const firstSignal = fetchSpy.mock.calls[0][1].signal;
+
+    rerender({ id: 'SMG-S24U' });
+
+    await waitFor(() => expect(result.current.phone).not.toBeNull());
+    expect(firstSignal.aborted).toBe(true);
+    expect(result.current.phone.name).toBe('Galaxy S24 Ultra');
+    expect(result.current.error).toBeNull();
+  });
 });

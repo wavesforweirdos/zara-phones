@@ -32,13 +32,20 @@ function PhoneListPage() {
       return;
     }
 
-    Promise.all(phones.map((p) => fetchProductById(p.id))).then((details) => {
-      const map = new Map(
-        details.map((d) => [d.id, (d.colorOptions ?? []).map((c) => c.hexCode.toUpperCase())])
-      );
-      sessionStorage.setItem(COLOR_MAP_CACHE_KEY, JSON.stringify([...map]));
-      setPhoneColorMap(map);
-    });
+    const controller = new AbortController();
+
+    Promise.all(phones.map((p) => fetchProductById(p.id, { signal: controller.signal })))
+      .then((details) => {
+        const map = new Map(
+          details.map((d) => [d.id, (d.colorOptions ?? []).map((c) => c.hexCode.toUpperCase())])
+        );
+        sessionStorage.setItem(COLOR_MAP_CACHE_KEY, JSON.stringify([...map]));
+        setPhoneColorMap(map);
+      })
+      // Aborted or failed: the list stays unfiltered and the next change retries
+      .catch(() => {});
+
+    return () => controller.abort();
   }, [colorFilter, phones, phoneColorMap]);
 
   const displayed = useMemo(() => {

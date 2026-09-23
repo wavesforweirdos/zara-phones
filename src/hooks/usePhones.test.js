@@ -59,4 +59,40 @@ describe('usePhones', () => {
     await waitFor(() => expect(result2.current.phones).toHaveLength(2));
     expect(fetchSpy).toHaveBeenCalledTimes(1); // no additional call
   });
+
+  it('aborts the stale request when the query changes', async () => {
+    const samsungPhones = [{ id: '2', name: 'Galaxy S24', brand: 'Samsung', basePrice: 999 }];
+    // First request never resolves on its own: it only rejects when aborted
+    fetchSpy.mockImplementationOnce(
+      (_url, { signal }) =>
+        new Promise((_resolve, reject) => {
+          signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+        })
+    );
+    fetchSpy.mockResolvedValueOnce({ ok: true, json: jest.fn().mockResolvedValue(samsungPhones) });
+
+    const { result, rerender } = renderHook(({ query }) => usePhones(query), {
+      initialProps: { query: 'apple' },
+    });
+    const firstSignal = fetchSpy.mock.calls[0][1].signal;
+
+    rerender({ query: 'samsung' });
+
+    await waitFor(() => expect(result.current.phones).toEqual(samsungPhones));
+    expect(firstSignal.aborted).toBe(true);
+    expect(result.current.error).toBeNull();
+    expect(result.current.loading).toBe(false);
+  });
+
+  it('aborts the pending request on unmount', () => {
+    fetchSpy.mockImplementationOnce(() => new Promise(() => {}));
+
+    const { unmount } = renderHook(() => usePhones(''));
+    const { signal } = fetchSpy.mock.calls[0][1];
+    expect(signal.aborted).toBe(false);
+
+    unmount();
+
+    expect(signal.aborted).toBe(true);
+  });
 });

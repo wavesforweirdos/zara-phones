@@ -7,10 +7,12 @@ const handleResponse = async (res) => {
   return res.json();
 };
 
-export const fetchProducts = (search = '') =>
+// `signal` (AbortController) lets callers cancel requests that are no longer needed
+export const fetchProducts = (search = '', { signal } = {}) =>
   fetch(`${BASE_URL}/products${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
     headers: HEADERS,
+    signal,
   }).then(handleResponse);
 
-export const fetchProductById = (id) =>
-  fetch(`${BASE_URL}/products/${id}`, { headers: HEADERS }).then(handleResponse);
+export const fetchProductById = (id, { signal } = {}) =>
+  fetch(`${BASE_URL}/products/${id}`, { headers: HEADERS, signal }).then(handleResponse);
