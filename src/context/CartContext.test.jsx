@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CartProvider, useCart } from './CartContext';
@@ -91,5 +92,34 @@ describe('CartContext', () => {
     await user.click(screen.getByText('add')); // quantity becomes 2
     expect(screen.getByTestId('count')).toHaveTextContent('2');
     expect(screen.getByTestId('total')).toHaveTextContent('1000'); // 500 × 2
+  });
+
+  it('hydrates the cart from localStorage, also under StrictMode double effects', () => {
+    localStorage.setItem('zara_cart', JSON.stringify([{ ...item1, quantity: 2 }]));
+
+    render(
+      <StrictMode>
+        <CartProvider>
+          <TestConsumer />
+        </CartProvider>
+      </StrictMode>
+    );
+
+    expect(screen.getByTestId('cart-item')).toHaveTextContent('Phone A');
+    expect(screen.getByTestId('count')).toHaveTextContent('2');
+    expect(JSON.parse(localStorage.getItem('zara_cart'))).toHaveLength(1);
+  });
+
+  it('starts empty when localStorage holds corrupted data', () => {
+    localStorage.setItem('zara_cart', '{not json');
+
+    render(
+      <CartProvider>
+        <TestConsumer />
+      </CartProvider>
+    );
+
+    expect(screen.queryByTestId('cart-item')).not.toBeInTheDocument();
+    expect(screen.getByTestId('count')).toHaveTextContent('0');
   });
 });
