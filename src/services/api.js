@@ -1,5 +1,6 @@
-const BASE_URL = 'https://prueba-tecnica-api-tienda-moviles.onrender.com';
-const HEADERS = { 'x-api-key': '87909682e6cd74208f41a6ef39fe4191' };
+// Injected at build time by webpack DefinePlugin from .env (see .env.example)
+const BASE_URL = process.env.API_BASE_URL;
+const HEADERS = { 'x-api-key': process.env.API_KEY };
 
 const handleResponse = async (res) => {
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
