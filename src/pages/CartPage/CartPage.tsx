@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import Button from '../../components/Button/Button';
+import type { CartItem } from '../../types/cart';
 import './CartPage.scss';
 
 function CartPage() {
@@ -14,7 +15,7 @@ function CartPage() {
     };
   }, []);
 
-  const handleRemove = (item) => {
+  const handleRemove = (item: CartItem) => {
     dispatch({
       type: 'REMOVE_ITEM',
       payload: { id: item.id, color: item.color, storage: item.storage },

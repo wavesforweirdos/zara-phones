@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
   }
 
   return {
-    entry: './src/index.js',
+    entry: './src/index.tsx',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: isProd ? '[name].[contenthash:8].js' : '[name].js',

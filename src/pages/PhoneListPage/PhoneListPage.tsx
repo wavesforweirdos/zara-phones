@@ -12,23 +12,23 @@ const COLOR_MAP_CACHE_KEY = 'phone_color_map';
 function PhoneListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('search') ?? '';
-  const setQuery = (val) => setSearchParams(val ? { search: val } : {}, { replace: true });
+  const setQuery = (val: string) => setSearchParams(val ? { search: val } : {}, { replace: true });
 
   const { phones, loading, error } = usePhones(query);
   useEffect(() => {
     document.title = 'Catálogo — Zara Phones';
   }, []);
 
-  const [colorFilter, setColorFilter] = useState([]);
+  const [colorFilter, setColorFilter] = useState<string[]>([]);
   // Map<id, hexCode[]> — built lazily on first color filter, cached in sessionStorage
-  const [phoneColorMap, setPhoneColorMap] = useState(null);
+  const [phoneColorMap, setPhoneColorMap] = useState<Map<string, string[]> | null>(null);
 
   useEffect(() => {
     if (colorFilter.length === 0 || phoneColorMap !== null || phones.length === 0) return;
 
     const cached = sessionStorage.getItem(COLOR_MAP_CACHE_KEY);
     if (cached) {
-      setPhoneColorMap(new Map(JSON.parse(cached)));
+      setPhoneColorMap(new Map<string, string[]>(JSON.parse(cached)));
       return;
     }
 
@@ -54,7 +54,7 @@ function PhoneListPage() {
 
     const selectedHex = colorFilter
       .map((name) => TOP_COLORS.find((c) => c.name === name)?.hexCode.toUpperCase())
-      .filter(Boolean);
+      .filter((hex): hex is string => Boolean(hex));
 
     return phones.filter((p) => {
       const phoneHex = phoneColorMap.get(p.id) ?? [];
