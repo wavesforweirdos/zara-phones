@@ -50,26 +50,29 @@ Permite visualizar, buscar y gestionar un catálogo de smartphones con carrito d
 
 | Categoría | Elección |
 |-----------|----------|
-| Framework | React 19 (ya instalado) |
-| Routing | React Router DOM v7 (ya instalado) |
-| Estilos | SASS (ya instalado) |
+| Framework | React 19 |
+| Lenguaje | TypeScript (modo `strict`) — sin PropTypes |
+| Routing | React Router DOM v7 |
+| Estilos | SASS |
 | Estado global | React Context API + `useReducer` |
-| Node | 18+ |
+| Build | Webpack 5 + Babel 8 (`preset-env`, `preset-react`, `preset-typescript`) |
+| Tests | Jest + Testing Library (unitarios/integración) · Playwright (e2e) |
+| Calidad | ESLint (react, react-hooks, jsx-a11y, typescript-eslint) + Prettier |
+| CI | GitHub Actions (`.github/workflows/ci.yml`) |
+| Despliegue | Vercel — https://zara-phones.vercel.app/ |
+| Node | `^22.18.0 \|\| >=24.11.0` (lo exige Babel 8; declarado en `engines`) |
 
-### Instalaciones pendientes
+### TypeScript
 
-```bash
-# Testing
-npm install --save-dev jest-environment-jsdom @testing-library/user-event
+- Babel solo elimina los tipos; la comprobación la hace `tsc --noEmit` (`npm run typecheck`)
+- Tipos de dominio en `src/types/` (`PhoneSummary`, `PhoneDetail`, `ColorOption`, `StorageOption`, `CartItem`, `CartAction`…); reutilizarlos en vez de redefinir formas
+- Declaraciones de assets (`*.svg`, `*.scss`) y de `process.env` en `src/types/global.d.ts`
+- No hay ficheros `.js`/`.jsx` en `src/` (`allowJs` desactivado)
 
-# Linting / Formatting (ya instalados: eslint, prettier)
-npm install --save-dev eslint-config-prettier eslint-plugin-jsx-a11y
-```
-
-### Opcional (no implementar salvo decisión explícita)
+### Fuera de alcance (no implementar salvo decisión explícita)
 
 - SSR con Next.js
-- Despliegue (Vercel, Netlify…)
+- Proxy en servidor para ocultar la API key
 
 ---
 
@@ -99,14 +102,21 @@ código ni en la documentación: vive en `.env` (variable `API_KEY`, ignorado po
 const BASE_URL = process.env.API_BASE_URL;
 const HEADERS = { 'x-api-key': process.env.API_KEY };
 
-export const fetchPhones = (search = '') =>
-  fetch(`${BASE_URL}/products${search ? `?search=${search}` : ''}`, { headers: HEADERS })
-    .then(res => res.json());
+export const fetchProducts = (search = '', { signal }: RequestOptions = {}): Promise<PhoneSummary[]> =>
+  fetch(`${BASE_URL}/products${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
+    headers: HEADERS,
+    signal,
+  }).then((res) => handleResponse<PhoneSummary[]>(res));
 
-export const fetchPhone = id =>
-  fetch(`${BASE_URL}/products/${id}`, { headers: HEADERS })
-    .then(res => res.json());
+export const fetchProductById = (id: string, { signal }: RequestOptions = {}): Promise<PhoneDetail> =>
+  fetch(`${BASE_URL}/products/${id}`, { headers: HEADERS, signal }).then((res) =>
+    handleResponse<PhoneDetail>(res)
+  );
 ```
+
+- `handleResponse` lanza `Error` si `!res.ok`
+- Webpack falla el build si falta `API_BASE_URL` o `API_KEY`
+- Jest usa valores ficticios (`jest.setup.env.js`); Playwright y CI también (`playwright.config.js`, `ci.yml`)
 
 ---
 
@@ -336,13 +346,14 @@ Footer (Total + CTA):
 - **sessionStorage** para cachear las respuestas de la API durante la sesión
 - Clave: `phones_cache_<query>` para la lista, `phone_cache_<id>` para el detalle
 - TTL: hasta que se cierre la pestaña (comportamiento nativo del sessionStorage)
-- Implementar en `src/hooks/usePhones.js` y `src/hooks/usePhone.js`
+- Implementado en `src/hooks/usePhones.ts` y `src/hooks/usePhone.ts`
 
 ### Carrito persistente
 
 - **localStorage** bajo la clave `zara_cart`
-- El estado se hidrata al iniciar la app desde `CartContext`
-- Cada ítem almacena: `{ id, name, brand, imageUrl, color, storage, price }`
+- Se hidrata de forma **síncrona** como estado inicial del reducer (`useReducer(cartReducer, undefined, loadStoredCart)`).
+  No hidratar en un `useEffect`: el efecto que guarda el carrito escribiría `[]` antes de cargarlo (bug real visto con `StrictMode`)
+- Cada ítem (`CartItem`) almacena: `{ id, name, brand, imageUrl, color, storage, price, quantity }`
 
 ### Búsqueda con debounce
 
@@ -352,13 +363,13 @@ Footer (Total + CTA):
 
 ### Context API con useReducer
 
-```js
-// src/context/CartContext.jsx
-const cartReducer = (state, action) => {
+```ts
+// src/context/CartContext.tsx
+const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
   switch (action.type) {
     case 'ADD_ITEM':    // añade o incrementa
     case 'REMOVE_ITEM': // elimina por id+color+storage
-    case 'LOAD_CART':   // hidrata desde localStorage
+    case 'LOAD_CART':   // reemplaza el carrito completo
     default: return state;
   }
 };
@@ -366,9 +377,19 @@ const cartReducer = (state, action) => {
 
 ### Llamadas a la API
 
-- Siempre a través de `src/services/api.js`
-- El header `x-api-key` nunca debe hardcodearse fuera de ese fichero
+- Siempre a través de `src/services/api.ts`
+- El header `x-api-key` solo se añade en ese fichero y su valor nunca se hardcodea
 - Gestión de errores con try/catch en cada hook, estado `error` expuesto al componente
+
+### Cancelación de peticiones (AbortController)
+
+- Cada efecto que hace fetch crea un `AbortController` y lo aborta en el cleanup
+  (`usePhones` al cambiar la query, `usePhone` al cambiar el id, mapa de colores de `PhoneListPage`)
+- En el `catch`, si `controller.signal.aborted` no se actualiza estado; `setLoading(false)` solo si no se abortó
+
+### Reglas de hooks
+
+- Ningún `return` temprano antes de un hook (`react-hooks/rules-of-hooks` en ESLint es `error`)
 
 ---
 
@@ -376,64 +397,64 @@ const cartReducer = (state, action) => {
 
 ```
 zara-phones/
+├── .github/workflows/ci.yml   # GitHub Actions: calidad + build + e2e
+├── e2e/                       # Playwright
+│   ├── fixtures/api.js        # API simulada con page.route
+│   ├── search.spec.js
+│   └── cart.spec.js
 ├── src/
-│   ├── components/
+│   ├── assets/                # SVG (logo, bolsa, chevron, cerrar)
+│   ├── components/            # Cada uno: Componente.tsx + .scss + .test.tsx
+│   │   ├── Button/
+│   │   ├── ColorSelector/     # Genérico: <T extends Swatch>
 │   │   ├── Navbar/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── Navbar.scss
 │   │   ├── PhoneCard/
-│   │   │   ├── PhoneCard.jsx
-│   │   │   └── PhoneCard.scss
-│   │   ├── PhoneGrid/
-│   │   │   ├── PhoneGrid.jsx
-│   │   │   └── PhoneGrid.scss
-│   │   ├── SearchBar/
-│   │   │   ├── SearchBar.jsx
-│   │   │   └── SearchBar.scss
-│   │   ├── ColorSelector/
-│   │   │   ├── ColorSelector.jsx
-│   │   │   └── ColorSelector.scss
-│   │   ├── StorageSelector/
-│   │   │   ├── StorageSelector.jsx
-│   │   │   └── StorageSelector.scss
-│   │   ├── CartItem/
-│   │   │   ├── CartItem.jsx
-│   │   │   └── CartItem.scss
-│   │   └── SimilarPhones/
-│   │       ├── SimilarPhones.jsx
-│   │       └── SimilarPhones.scss
+│   │   ├── SearchBar/         # Input + contador + filtro de color
+│   │   ├── SimilarPhones/     # Carrusel con scrollbar propio
+│   │   ├── SpecsTable/
+│   │   └── StorageSelector/
+│   ├── constants/
+│   │   └── filters.ts         # Colores del filtro de la lista
 │   ├── context/
-│   │   └── CartContext.jsx
+│   │   └── CartContext.tsx
 │   ├── hooks/
-│   │   ├── usePhones.js       # lista + búsqueda + caché sessionStorage
-│   │   ├── usePhone.js        # detalle + caché sessionStorage
-│   │   └── useDebounce.js
+│   │   ├── usePhones.ts       # lista + búsqueda + caché sessionStorage + abort
+│   │   ├── usePhone.ts        # detalle + caché sessionStorage + abort
+│   │   └── useDebounce.ts
 │   ├── pages/
 │   │   ├── PhoneListPage/
-│   │   │   ├── PhoneListPage.jsx
-│   │   │   └── PhoneListPage.scss
 │   │   ├── PhoneDetailPage/
-│   │   │   ├── PhoneDetailPage.jsx
-│   │   │   └── PhoneDetailPage.scss
 │   │   └── CartPage/
-│   │       ├── CartPage.jsx
-│   │       └── CartPage.scss
 │   ├── services/
-│   │   └── api.js
+│   │   └── api.ts
 │   ├── styles/
 │   │   ├── _variables.scss    # CSS custom properties + SASS vars
 │   │   ├── _reset.scss
-│   │   └── main.scss
-│   ├── App.jsx
-│   └── index.js
+│   │   ├── _container.scss
+│   │   ├── main.scss
+│   │   └── mixins/            # _breakpoints.scss · _typography.scss
+│   ├── test-utils/
+│   │   └── fetch.ts           # jsonResponse, pendingUntilAborted, signalOfCall
+│   ├── types/
+│   │   ├── phone.ts
+│   │   ├── cart.ts
+│   │   └── global.d.ts
+│   ├── App.tsx
+│   └── index.tsx
 ├── public/
-│   └── index.html
-├── __tests__/                 # o junto a cada componente como *.test.jsx
-├── .eslintrc.json
-├── .prettierrc
+│   ├── index.html
+│   └── favicon.ico
+├── __mocks__/fileMock.js      # Stub de imágenes para Jest
+├── .env.example               # Plantilla de variables (.env está en .gitignore)
 ├── babel.config.js
+├── eslint.config.js           # Flat config
 ├── jest.config.js
-├── webpack.config.js          # dev + prod modes
+├── jest.setup.env.js          # Variables de API ficticias para tests
+├── jest.setup.polyfills.js
+├── playwright.config.js
+├── tsconfig.json
+├── vercel.json                # Rewrites de la SPA a index.html
+├── webpack.config.js          # dev + prod, DefinePlugin con las variables de .env
 ├── CLAUDE.md
 ├── README.md
 └── package.json
@@ -469,25 +490,14 @@ docs: add README with setup instructions
 
 ## Scripts npm
 
-Añadir al `package.json`:
-
-```json
-{
-  "scripts": {
-    "start":  "webpack serve --mode development",
-    "build":  "webpack --mode production",
-    "test":   "jest --coverage",
-    "lint":   "eslint src --ext .js,.jsx",
-    "format": "prettier --write src/**/*.{js,jsx,scss}"
-  }
-}
-```
-
 - **`start`** — webpack-dev-server sin minimizar (modo desarrollo)
 - **`build`** — assets concatenados y minimizados (modo producción)
 - **`test`** — Jest con coverage report
+- **`test:e2e`** — Playwright (arranca su propio dev server en el puerto 3100 con API simulada)
 - **`lint`** — ESLint sobre `src/`
-- **`format`** — Prettier sobre JS, JSX y SCSS
+- **`typecheck`** — `tsc --noEmit`
+- **`format`** / **`format:check`** — Prettier sobre `src/` (TS, TSX, SCSS) y `e2e/`
+- **`validate`** — lint + typecheck + format + test. Ejecutarlo antes de cada merge a `develop`
 
 ---
 
@@ -514,23 +524,16 @@ Añadir al `package.json`:
 ### Consola libre de errores
 
 - Sin `console.error` ni warnings de React en ninguna vista
-- Sin prop-types warnings (usar PropTypes o TypeScript)
+- Props tipadas con interfaces de TypeScript (no se usa PropTypes)
 - Sin peticiones fallidas sin gestión de error
 
 ### Linters y formatters
 
-```jsonc
-// .eslintrc.json — configuración base
-{
-  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
-  "plugins": ["react", "jsx-a11y"],
-  "rules": {
-    "react/prop-types": "warn",
-    "jsx-a11y/alt-text": "error",
-    "no-console": "warn"
-  }
-}
-```
+`eslint.config.js` (flat config) sobre `src/**/*.{ts,tsx}` con parser de `typescript-eslint`:
+
+- `plugin:react/recommended`, `jsx-a11y/recommended`, `typescript-eslint` recomendadas y `eslint-config-prettier`
+- `react-hooks/rules-of-hooks`: `error` · `react-hooks/exhaustive-deps`: `warn`
+- `react/prop-types`: `off` (TypeScript) · `jsx-a11y/alt-text`: `error` · `no-console`: `warn`
 
 ```jsonc
 // .prettierrc
@@ -550,7 +553,11 @@ Añadir al `package.json`:
   - Añadir teléfono al carrito desde detalle
   - Eliminar teléfono del carrito
   - Búsqueda filtra resultados correctamente
-- Herramientas: **Jest** + **@testing-library/react**
+- Herramientas: **Jest** + **@testing-library/react** (+ `@testing-library/dom` declarado explícitamente)
+- Mockear fetch con `jest.spyOn(globalThis, 'fetch')` y los helpers de `src/test-utils/fetch.ts`
+- Módulos mockeados tipados con `jest.mocked(...)`
+- **E2E** con Playwright en `e2e/`: API siempre simulada con `mockApi(page)`, nunca contra la API real
+- **CI**: GitHub Actions ejecuta en cada push y PR lint, typecheck, `format:check`, tests, build y e2e
 
 ---
 
@@ -559,7 +566,7 @@ Añadir al `package.json`:
 ### Estrategia de ramas
 
 ```
-main        ← producción, siempre estable y desplegable
+master      ← producción, siempre estable; cada push despliega en Vercel
 develop     ← integración, acumula features terminadas
 feature/*   ← desarrollo de nueva funcionalidad
 fix/*       ← corrección de bugs
@@ -575,6 +582,8 @@ test/*      ← añadir o mejorar tests en aislamiento
 | `fix/` | Corrección de bug |
 | `chore/` | Webpack, ESLint, dependencias, CI |
 | `test/` | Tests sin cambio funcional asociado |
+| `refactor/` | Refactorización sin cambio funcional (p. ej. `refactor/typescript`) |
+| `docs/` | Solo documentación |
 
 Ejemplos:
 
@@ -612,10 +621,10 @@ test/cart-context-reducer
 5. Elimina la rama local (opcional)
    git branch -d feature/nombre-feature
 
-6. Cuando develop está estable y la entrega es inminente
-   git checkout main
+6. Cuando develop está estable (CI en verde) y la entrega es inminente
+   git checkout master
    git merge --no-ff develop
-   git push origin main
+   git push origin master
 ```
 
 ### Convención de commits (Conventional Commits)
@@ -674,4 +683,4 @@ docs: add README with setup and architecture sections
 
 ### Regla fundamental
 
-**Nunca commitear directamente a `main` ni a `develop`.** Siempre trabajar en una rama propia y mergear mediante pull request (en remoto) o `--no-ff merge` (en local). Esto garantiza historial limpio y revisión del código antes de integrar.
+**Nunca commitear directamente a `master` ni a `develop`.** Siempre trabajar en una rama propia y mergear mediante pull request (en remoto) o `--no-ff merge` (en local). Esto garantiza historial limpio y revisión del código antes de integrar.
