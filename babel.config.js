@@ -12,6 +12,8 @@ module.exports = (api) => {
         },
       ],
       ['@babel/preset-react', { runtime: 'automatic', development: isDevelopment }],
+      // Strips types only; type checking is done by `tsc --noEmit` (npm run typecheck)
+      '@babel/preset-typescript',
     ],
   };
 };
