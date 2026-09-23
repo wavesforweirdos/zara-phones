@@ -2,8 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider } from '../../context/CartContext';
 import Navbar from './Navbar';
+import type { CartItem } from '../../types/cart';
 
-function renderNavbar(cartItems = [], path = '/') {
+function renderNavbar(cartItems: CartItem[] = [], path = '/') {
   localStorage.setItem('zara_cart', JSON.stringify(cartItems));
   return render(
     <MemoryRouter initialEntries={[path]}>

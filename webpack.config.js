@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
   }
 
   return {
-    entry: './src/index.js',
+    entry: './src/index.tsx',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: isProd ? '[name].[contenthash:8].js' : '[name].js',
@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(ts|tsx|js|jsx)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
@@ -50,7 +50,7 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     plugins: [
       new HtmlWebpackPlugin({ template: './public/index.html' }),

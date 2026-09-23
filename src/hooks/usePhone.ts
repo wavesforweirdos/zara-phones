@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 import { fetchProductById } from '../services/api';
+import type { PhoneDetail } from '../types/phone';
 
-function usePhone(id) {
-  const [phone, setPhone] = useState(null);
+interface UsePhoneResult {
+  phone: PhoneDetail | null;
+  loading: boolean;
+  error: string | null;
+}
+
+function usePhone(id: string | undefined): UsePhoneResult {
+  const [phone, setPhone] = useState<PhoneDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -29,8 +36,8 @@ function usePhone(id) {
         setPhone(data);
         sessionStorage.setItem(cacheKey, JSON.stringify(data));
       } catch (err) {
-        if (err.name === 'AbortError') return;
-        setError(err.message);
+        if (controller.signal.aborted) return;
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

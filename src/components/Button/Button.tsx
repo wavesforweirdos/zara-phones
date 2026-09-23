@@ -1,6 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import './Button.scss';
+
+interface ButtonProps {
+  children: ReactNode;
+  variant?: 'primary' | 'secondary';
+  disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  className?: string;
+}
 
 const Button = ({
   children,
@@ -9,7 +17,7 @@ const Button = ({
   onClick,
   type = 'button',
   className = '',
-}) => {
+}: ButtonProps) => {
   return (
     <button
       type={type}
@@ -20,15 +28,6 @@ const Button = ({
       {children}
     </button>
   );
-};
-
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['primary', 'secondary']),
-  disabled: PropTypes.bool,
-  onClick: PropTypes.func,
-  type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  className: PropTypes.string,
 };
 
 export default Button;

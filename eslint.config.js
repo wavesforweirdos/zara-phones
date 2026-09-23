@@ -1,17 +1,20 @@
 const pluginReact = require('eslint-plugin-react');
 const pluginA11y = require('eslint-plugin-jsx-a11y');
 const configPrettier = require('eslint-config-prettier');
+const tseslint = require('typescript-eslint');
 const globals = require('globals');
 
 module.exports = [
   {
-    files: ['src/**/*.{js,jsx}'],
+    files: ['src/**/*.{ts,tsx,js,jsx}'],
     plugins: {
       react: pluginReact,
       'jsx-a11y': pluginA11y,
+      '@typescript-eslint': tseslint.plugin,
     },
     languageOptions: {
-      ecmaVersion: 2021,
+      parser: tseslint.parser,
+      ecmaVersion: 2022,
       sourceType: 'module',
       globals: {
         ...globals.browser,
@@ -27,11 +30,15 @@ module.exports = [
     rules: {
       ...pluginReact.configs.recommended.rules,
       ...pluginA11y.configs.recommended.rules,
-      'react/prop-types': 'warn',
+      ...tseslint.configs.eslintRecommended.rules,
+      // Props are typed with TypeScript interfaces instead of PropTypes
+      'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
       'jsx-a11y/alt-text': 'error',
       'no-console': 'warn',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
   configPrettier,

@@ -8,6 +8,7 @@ import ColorSelector from '../../components/ColorSelector/ColorSelector';
 import SpecsTable from '../../components/SpecsTable/SpecsTable';
 import SimilarPhones from '../../components/SimilarPhones/SimilarPhones';
 import chevronIcon from '../../assets/chevron.svg';
+import type { ColorOption, StorageOption } from '../../types/phone';
 import './PhoneDetailPage.scss';
 
 function PhoneDetailPage() {
@@ -16,8 +17,8 @@ function PhoneDetailPage() {
   const { dispatch } = useCart();
   const navigate = useNavigate();
 
-  const [selectedStorage, setSelectedStorage] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedStorage, setSelectedStorage] = useState<StorageOption | null>(null);
+  const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
 
   useEffect(() => {
     if (phone) {
@@ -57,6 +58,8 @@ function PhoneDetailPage() {
   const canAdd = Boolean(selectedStorage && selectedColor);
 
   const handleAdd = () => {
+    if (!selectedStorage || !selectedColor) return;
+
     dispatch({
       type: 'ADD_ITEM',
       payload: {
@@ -78,7 +81,7 @@ function PhoneDetailPage() {
         <button
           type="button"
           className="phone-detail-page__back"
-          onClick={() => navigate(window.history.length > 1 ? -1 : '/')}
+          onClick={() => (window.history.length > 1 ? navigate(-1) : navigate('/'))}
         >
           <img
             src={chevronIcon}

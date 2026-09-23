@@ -107,7 +107,7 @@ describe('CartContext', () => {
 
     expect(screen.getByTestId('cart-item')).toHaveTextContent('Phone A');
     expect(screen.getByTestId('count')).toHaveTextContent('2');
-    expect(JSON.parse(localStorage.getItem('zara_cart'))).toHaveLength(1);
+    expect(JSON.parse(localStorage.getItem('zara_cart') ?? '[]')).toHaveLength(1);
   });
 
   it('starts empty when localStorage holds corrupted data', () => {

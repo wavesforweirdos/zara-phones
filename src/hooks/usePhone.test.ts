@@ -1,5 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import usePhone from './usePhone';
+import { jsonResponse, pendingUntilAborted, signalOfCall } from '../test-utils/fetch';
+import type { FetchSpy } from '../test-utils/fetch';
 
 const mockPhone = {
   id: 'SMG-S24U',
@@ -9,14 +11,11 @@ const mockPhone = {
 };
 
 describe('usePhone', () => {
-  let fetchSpy;
+  let fetchSpy: FetchSpy;
 
   beforeEach(() => {
     sessionStorage.clear();
-    fetchSpy = jest.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(mockPhone),
-    });
+    fetchSpy = jest.spyOn(globalThis, 'fetch').mockResolvedValue(jsonResponse(mockPhone));
   });
 
   afterEach(() => {
@@ -26,8 +25,8 @@ describe('usePhone', () => {
   it('returns phone detail by id', async () => {
     const { result } = renderHook(() => usePhone('SMG-S24U'));
     await waitFor(() => expect(result.current.phone).not.toBeNull());
-    expect(result.current.phone.name).toBe('Galaxy S24 Ultra');
-    expect(result.current.phone.brand).toBe('Samsung');
+    expect(result.current.phone?.name).toBe('Galaxy S24 Ultra');
+    expect(result.current.phone?.brand).toBe('Samsung');
     expect(fetchSpy).toHaveBeenCalledWith(
       expect.stringContaining('/products/SMG-S24U'),
       expect.any(Object)
@@ -51,7 +50,7 @@ describe('usePhone', () => {
     fetchSpy.mockImplementationOnce(() => new Promise(() => {}));
 
     const { unmount } = renderHook(() => usePhone('SMG-S24U'));
-    const { signal } = fetchSpy.mock.calls[0][1];
+    const signal = signalOfCall(fetchSpy);
     expect(signal.aborted).toBe(false);
 
     unmount();
@@ -60,23 +59,18 @@ describe('usePhone', () => {
   });
 
   it('aborts the previous request when the id changes', async () => {
-    fetchSpy.mockImplementationOnce(
-      (_url, { signal }) =>
-        new Promise((_resolve, reject) => {
-          signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
-        })
-    );
+    fetchSpy.mockImplementationOnce(pendingUntilAborted);
 
     const { result, rerender } = renderHook(({ id }) => usePhone(id), {
       initialProps: { id: 'APL-IP15' },
     });
-    const firstSignal = fetchSpy.mock.calls[0][1].signal;
+    const firstSignal = signalOfCall(fetchSpy);
 
     rerender({ id: 'SMG-S24U' });
 
     await waitFor(() => expect(result.current.phone).not.toBeNull());
     expect(firstSignal.aborted).toBe(true);
-    expect(result.current.phone.name).toBe('Galaxy S24 Ultra');
+    expect(result.current.phone?.name).toBe('Galaxy S24 Ultra');
     expect(result.current.error).toBeNull();
   });
 });

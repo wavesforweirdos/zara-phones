@@ -8,6 +8,7 @@ const defaultProps = {
   value: '',
   onChange: jest.fn(),
   count: 20,
+  onColorFilter: jest.fn(),
 };
 
 describe('SearchBar', () => {

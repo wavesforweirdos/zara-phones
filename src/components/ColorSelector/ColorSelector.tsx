@@ -1,9 +1,20 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import type { Swatch } from '../../types/phone';
 import './ColorSelector.scss';
 
-function ColorSelector({ options, selected, onChange }) {
-  const [hovered, setHovered] = useState(null);
+// Generic so onChange hands back the full option type of the caller (e.g. ColorOption with imageUrl)
+interface ColorSelectorProps<T extends Swatch> {
+  options: T[];
+  selected?: T | null;
+  onChange: (option: T) => void;
+}
+
+function ColorSelector<T extends Swatch>({
+  options,
+  selected = null,
+  onChange,
+}: ColorSelectorProps<T>) {
+  const [hovered, setHovered] = useState<T | null>(null);
 
   const displayName = hovered?.name ?? selected?.name ?? null;
 
@@ -33,20 +44,5 @@ function ColorSelector({ options, selected, onChange }) {
     </div>
   );
 }
-
-const colorOptionShape = PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  hexCode: PropTypes.string.isRequired,
-});
-
-ColorSelector.propTypes = {
-  options: PropTypes.arrayOf(colorOptionShape).isRequired,
-  selected: colorOptionShape,
-  onChange: PropTypes.func.isRequired,
-};
-
-ColorSelector.defaultProps = {
-  selected: null,
-};
 
 export default ColorSelector;

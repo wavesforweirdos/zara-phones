@@ -1,15 +1,20 @@
-import PropTypes from 'prop-types';
 import { useRef, useEffect, useCallback } from 'react';
+import type { KeyboardEvent, MouseEvent as ReactMouseEvent } from 'react';
 import PhoneCard from '../PhoneCard/PhoneCard';
+import type { PhoneSummary } from '../../types/phone';
 import './SimilarPhones.scss';
 
-function SimilarPhones({ products }) {
+interface SimilarPhonesProps {
+  products?: PhoneSummary[];
+}
+
+function SimilarPhones({ products }: SimilarPhonesProps) {
   if (!products?.length) return null;
 
   const visible = products.slice(0, 5);
-  const gridRef = useRef(null);
-  const thumbRef = useRef(null);
-  const trackRef = useRef(null);
+  const gridRef = useRef<HTMLUListElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragStartScroll = useRef(0);
@@ -35,7 +40,7 @@ function SimilarPhones({ products }) {
 
     thumb.style.width = `${thumbWidth}px`;
     thumb.style.transform = `translateX(${thumbLeft}px)`;
-    thumb.setAttribute('aria-valuenow', Math.round((grid.scrollLeft / scrollable) * 100));
+    thumb.setAttribute('aria-valuenow', String(Math.round((grid.scrollLeft / scrollable) * 100)));
   }, []);
 
   useEffect(() => {
@@ -50,7 +55,7 @@ function SimilarPhones({ products }) {
     };
   }, [updateThumb]);
 
-  const handleThumbKeyDown = useCallback((e) => {
+  const handleThumbKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
     const grid = gridRef.current;
     if (!grid) return;
     const card = grid.firstElementChild;
@@ -71,7 +76,7 @@ function SimilarPhones({ products }) {
     }
   }, []);
 
-  const handleThumbMouseDown = useCallback((e) => {
+  const handleThumbMouseDown = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     isDragging.current = true;
     dragStartX.current = e.clientX;
@@ -79,7 +84,7 @@ function SimilarPhones({ products }) {
   }, []);
 
   useEffect(() => {
-    const onMove = (e) => {
+    const onMove = (e: MouseEvent) => {
       if (!isDragging.current) return;
       const grid = gridRef.current;
       const track = trackRef.current;
@@ -147,17 +152,5 @@ function SimilarPhones({ products }) {
     </section>
   );
 }
-
-SimilarPhones.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      brand: PropTypes.string.isRequired,
-      basePrice: PropTypes.number.isRequired,
-      imageUrl: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
 
 export default SimilarPhones;

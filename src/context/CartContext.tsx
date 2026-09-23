@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import type { Dispatch, ReactNode } from 'react';
+import type { CartAction, CartItem } from '../types/cart';
 
 const CART_KEY = 'zara_cart';
 
-// item shape: { id, name, brand, imageUrl, color, storage, price, quantity }
-const cartReducer = (state, action) => {
+const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
   switch (action.type) {
     case 'LOAD_CART':
       return action.payload;
@@ -32,13 +32,20 @@ const cartReducer = (state, action) => {
   }
 };
 
-const CartContext = createContext(null);
+interface CartContextValue {
+  cart: CartItem[];
+  dispatch: Dispatch<CartAction>;
+  cartCount: number;
+  cartTotal: number;
+}
+
+const CartContext = createContext<CartContextValue | null>(null);
 
 // Read synchronously as the reducer's initial state: hydrating in an effect let the sync
 // effect below overwrite the stored cart with [] before it was loaded (seen under StrictMode)
-const loadStoredCart = () => {
+const loadStoredCart = (): CartItem[] => {
   try {
-    const stored = JSON.parse(localStorage.getItem(CART_KEY));
+    const stored: unknown = JSON.parse(localStorage.getItem(CART_KEY) ?? '[]');
     return Array.isArray(stored) ? stored : [];
   } catch {
     // corrupted storage — start empty
@@ -46,7 +53,7 @@ const loadStoredCart = () => {
   }
 };
 
-export function CartProvider({ children }) {
+export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, dispatch] = useReducer(cartReducer, undefined, loadStoredCart);
 
   // Sync to localStorage on every change
@@ -64,11 +71,7 @@ export function CartProvider({ children }) {
   );
 }
 
-CartProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export function useCart() {
+export function useCart(): CartContextValue {
   const ctx = useContext(CartContext);
   if (!ctx) throw new Error('useCart must be used within a CartProvider');
   return ctx;
