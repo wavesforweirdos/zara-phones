@@ -16,5 +16,6 @@ module.exports = {
     '!src/index.{ts,tsx,js}',
     '!src/**/*.d.ts',
     '!src/types/**',
+    '!src/test-utils/**',
   ],
 };

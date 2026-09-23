@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider } from '../../context/CartContext';
 import CartPage from './CartPage';
+import type { CartItem } from '../../types/cart';
 
 jest.mock('../../assets/close.svg', () => 'close-icon.svg');
 
@@ -17,7 +18,7 @@ const mockItem = {
   quantity: 2, // total = 2398 EUR — distinct from item price line
 };
 
-function renderWithCart(cartItems = []) {
+function renderWithCart(cartItems: CartItem[] = []) {
   localStorage.setItem('zara_cart', JSON.stringify(cartItems));
   return render(
     <MemoryRouter>

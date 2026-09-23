@@ -6,10 +6,18 @@ import PhoneListPage from './PhoneListPage';
 jest.mock('../../hooks/usePhones', () => jest.fn());
 jest.mock('../../services/api', () => ({ fetchProductById: jest.fn() }));
 
-import usePhones from '../../hooks/usePhones';
-import { fetchProductById } from '../../services/api';
+import usePhonesHook from '../../hooks/usePhones';
+import { fetchProductById as fetchProductByIdFn } from '../../services/api';
+import type { PhoneDetail, PhoneSummary } from '../../types/phone';
 
-const mockPhones = [
+const usePhones = jest.mocked(usePhonesHook);
+const fetchProductById = jest.mocked(fetchProductByIdFn);
+
+// Only the fields the color filter reads from the detail endpoint
+const colorsOf = (id: string, colorOptions: { name: string; hexCode: string }[]) =>
+  ({ id, colorOptions }) as PhoneDetail;
+
+const mockPhones: PhoneSummary[] = [
   { id: '1', name: 'Galaxy S24', brand: 'Samsung', basePrice: 999, imageUrl: 'img1.jpg' },
   { id: '2', name: 'iPhone 15', brand: 'Apple', basePrice: 1099, imageUrl: 'img2.jpg' },
 ];
@@ -74,8 +82,8 @@ describe('PhoneListPage', () => {
 
     // Phone 1 has Black, phone 2 has only White — only phone 1 should survive the filter
     fetchProductById
-      .mockResolvedValueOnce({ id: '1', colorOptions: [{ name: 'Black', hexCode: '#000000' }] })
-      .mockResolvedValueOnce({ id: '2', colorOptions: [{ name: 'White', hexCode: '#FFFFFF' }] });
+      .mockResolvedValueOnce(colorsOf('1', [{ name: 'Black', hexCode: '#000000' }]))
+      .mockResolvedValueOnce(colorsOf('2', [{ name: 'White', hexCode: '#FFFFFF' }]));
 
     usePhones.mockReturnValue({ phones: mockPhones, loading: false, error: null });
 

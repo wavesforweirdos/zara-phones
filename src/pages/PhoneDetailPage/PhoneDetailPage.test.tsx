@@ -16,14 +16,19 @@ jest.mock('../../context/CartContext', () => ({
   useCart: () => ({ dispatch: mockDispatch }),
 }));
 
-import usePhone from '../../hooks/usePhone';
+import usePhoneHook from '../../hooks/usePhone';
+import type { PhoneDetail } from '../../types/phone';
 
-const mockPhone = {
+const usePhone = jest.mocked(usePhoneHook);
+
+const mockPhone: PhoneDetail = {
   id: '1',
   name: 'Galaxy S24 Ultra',
   brand: 'Samsung',
   basePrice: 1299,
+  imageUrl: 'black.jpg',
   description: 'Flagship smartphone',
+  rating: 4.5,
   colorOptions: [
     { name: 'Titanium Black', hexCode: '#000000', imageUrl: 'black.jpg' },
     { name: 'Titanium Gray', hexCode: '#808080', imageUrl: 'gray.jpg' },
@@ -180,7 +185,9 @@ describe('PhoneDetailPage', () => {
   });
 
   it('el botón de volver navega a / cuando window.history no tiene historial previo', () => {
-    const historySpy = jest.spyOn(window, 'history', 'get').mockReturnValue({ length: 1 });
+    const historySpy = jest
+      .spyOn(window, 'history', 'get')
+      .mockReturnValue({ ...window.history, length: 1 });
     render(
       <MemoryRouter>
         <PhoneDetailPage />
