@@ -1,5 +1,6 @@
 const pluginReact = require('eslint-plugin-react');
 const pluginA11y = require('eslint-plugin-jsx-a11y');
+const pluginReactHooks = require('eslint-plugin-react-hooks');
 const configPrettier = require('eslint-config-prettier');
 const tseslint = require('typescript-eslint');
 const globals = require('globals');
@@ -10,6 +11,7 @@ module.exports = [
     plugins: {
       react: pluginReact,
       'jsx-a11y': pluginA11y,
+      'react-hooks': pluginReactHooks,
       '@typescript-eslint': tseslint.plugin,
     },
     languageOptions: {
@@ -34,6 +36,8 @@ module.exports = [
       // Props are typed with TypeScript interfaces instead of PropTypes
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'jsx-a11y/alt-text': 'error',
       'no-console': 'warn',
       'no-unused-vars': 'off',

@@ -9,9 +9,8 @@ interface SimilarPhonesProps {
 }
 
 function SimilarPhones({ products }: SimilarPhonesProps) {
-  if (!products?.length) return null;
-
-  const visible = products.slice(0, 5);
+  const hasProducts = Boolean(products?.length);
+  const visible = products?.slice(0, 5) ?? [];
   const gridRef = useRef<HTMLUListElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -53,7 +52,8 @@ function SimilarPhones({ products }: SimilarPhonesProps) {
       grid.removeEventListener('scroll', updateThumb);
       window.removeEventListener('resize', updateThumb);
     };
-  }, [updateThumb]);
+    // hasProducts: the grid only exists (and needs listeners) once there is something to show
+  }, [updateThumb, hasProducts]);
 
   const handleThumbKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
     const grid = gridRef.current;
@@ -111,6 +111,9 @@ function SimilarPhones({ products }: SimilarPhonesProps) {
       document.removeEventListener('mouseup', onUp);
     };
   }, []);
+
+  // Early return only after every hook, so the hook order is the same on every render
+  if (!hasProducts) return null;
 
   return (
     <section className="similar-phones">
